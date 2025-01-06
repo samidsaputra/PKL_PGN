@@ -21,11 +21,6 @@
             </ul>
         </div>
         @endif
-        <!-- <div class="logo-section">
-            <div class="logo-circle">
-                <h1></h1>
-            </div>
-        </div> -->
         <div class="form-section">
             <h2>Hello, Welcome Back</h2>
         
@@ -37,11 +32,7 @@
 
                 <div class="forgot-password">
                     <a href="#">Forgot Password?</a>
-                </div>
-                <div class="make-account">
-                    <a href="#">Don't have any account?</a>
-                </div>
-                
+                </div>                
             </form>
         </div>
     </div>
