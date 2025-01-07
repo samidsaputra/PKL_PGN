@@ -1,0 +1,359 @@
+/* Reset */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    height: 100vh;
+}
+
+/* Side Navbar */
+.side-navbar {
+    width: 250px;
+    background-color: #32599c;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+}
+
+.side-navbar .logo img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 20px;
+}
+
+.side-navbar .menu {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .side-navbar .menu-item {
+    color: #d1d5db;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .side-navbar .menu-item:hover,
+  .side-navbar .menu-item.active {
+    background-color: #85C226;
+    color: white;
+  }
+  
+  .side-navbar .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .logo img {
+      width: 40px;
+      height: 40px;
+  }
+  
+  .menu {
+      display: flex;
+      gap: 15px;
+  }
+  
+  .menu-item {
+      color: #d1d5db;
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .menu-item:hover,
+  .menu-item.active {
+      background-color: #85C226;
+      color: white;
+  }
+  
+  .actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+  }
+  
+  .notification-btn {
+      background: none;
+      border: none;
+      color: #d1d5db;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 3%;
+      transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .notification-btn:hover {
+    background-color: #85C226;
+    color: white;
+  }
+  
+  .icon {
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
+  }
+  
+  .profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .profile-btn {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    gap: 10px;
+  }
+  
+  .profile-btn img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+  }
+  
+  .profile-btn span {
+    color: #d1d5db;
+    font-size: 16px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+  
+  .profile-btn:hover span {
+    color: white;
+  }
+  
+  /* main */
+  main{
+  margin: 20px;
+  width: 100%;
+  }
+/* Container */
+.container {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+
+/* Title */
+.title h2 {
+    font-size: 28px;
+    color: #32599c;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Styling form input to make it inline */
+.card {
+    margin: 20px;
+}
+
+form {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px; /* Reduced gap between form fields */
+    flex-wrap: wrap; /* To allow wrapping if the screen size is too small */
+    max-width: 800px; /* Make form width smaller */
+    margin: 0 auto;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 200px; /* Prevent form elements from becoming too narrow */
+}
+
+form .form-group label {
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+form input {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%; /* Ensure input fields fill the form-group */
+}
+
+button.submit-btn {
+    padding: 10px 15px;
+    background-color: #32599c;
+    color: white;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%; /* Make the submit button stretch to the full width */
+}
+
+button.submit-btn:hover {
+    background-color: #00796b;
+}
+
+/* Tabel yang lebih ringkas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 8px 10px; /* Mengurangi padding */
+    text-align: center;
+    font-size: 14px; /* Mengurangi ukuran font */
+}
+
+table th {
+    background-color: #32599c;
+    color: white;
+}
+
+table td {
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #ddd;
+}
+
+table td button {
+    padding: 6px 12px;
+    background-color: #32599c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+table td button:hover {
+    background-color: #32599c;
+}
+
+/* Alert Message */
+.alert {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    display: none;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    table th, table td {
+        padding: 6px 8px; /* Menurunkan padding di perangkat kecil */
+        font-size: 12px; /* Menurunkan ukuran font */
+    }
+
+
+    form {
+        flex-direction: column; /* Membuat form menjadi vertikal pada perangkat kecil */
+        align-items: stretch;
+        width: 100%; /* Membuat form mengambil lebar penuh pada perangkat kecil */
+    }
+
+    form .form-group {
+        flex: none;
+        width: 100%; /* Membuat setiap inputan lebar penuh pada perangkat kecil */
+    }
+
+    button.submit-btn {
+        width: 100%; /* Membuat tombol submit lebar penuh pada perangkat kecil */
+    }
+}
+
+/* Gaya untuk modal */
+.modal {
+    display: none; /* Tersembunyi secara default */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    border-radius: 8px;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover, .close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Warna khusus untuk tombol edit */
+table td button.edit-btn {
+    background-color: #28a745; /* Hijau */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+table td button.edit-btn:hover {
+    background-color: #218838; /* Hijau lebih gelap saat hover */
+}
+
+/* Warna khusus untuk tombol delete */
+table td button.delete-btn {
+    background-color: #dc3545; /* Merah */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+table td button.delete-btn:hover {
+    background-color: #c82333; /* Merah lebih gelap saat hover */
+}
