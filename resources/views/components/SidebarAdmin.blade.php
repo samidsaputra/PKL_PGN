@@ -135,8 +135,8 @@
     <div class="menu">
         <a href="{{ route('dashboard') }}" class="menu-item {{ Request::is('dashboard') ? 'active' : '' }}">Dashboard</a>
         <a href="{{ route('UserRegistration') }}" class="menu-item {{ Request::is('UserReg') ? 'active' : '' }}">User</a>
-        <a href="#" class="menu-item {{ Request::is('satuan-kerja') ? 'active' : '' }}">Satuan Kerja</a>
-        <a href="#" class="menu-item {{ Request::is('barang') ? 'active' : '' }}">Barang</a>
+        <a href="{{ route('satuankerja') }}" class="menu-item {{ Request::is('satker') ? 'active' : '' }}">Satuan Kerja</a>
+        <a href="{{ route('daftar.barang') }}" class="menu-item {{ Request::is('daftar-Barang') ? 'active' : '' }}">Barang</a>
         <a href="#" class="menu-item {{ Request::is('stok') ? 'active' : '' }}">Stok</a>
     </div>
     <div class="actions">
