@@ -1,171 +1,370 @@
-/* General Styling */
-/* Background untuk keseluruhan halaman */
+/* Reset */
 body {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-    background: url("../img/Login_Page.jpg") no-repeat center center/cover;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  /* Container */
-  .register-container {
-    display: flex;
-    flex-direction: row;
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 15px;
-    overflow: hidden;
-    width: 500px;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
-  }
-  
-  /* Left Section */
-  .logo-section {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-  }
-  
-  .logo-circle {
-    border-radius: 50%;
-    text-align: center;
-    padding: 50px;
-    background : url("../img/Background_sinar_akademia.png") no-repeat center center/cover;
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
-    line-height: 1.5;
-  }
-  
-  /* Right Section */
-  .form-section {
-    flex: 1.5;
-    padding: 40px;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  
-  .form-section h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  form input {
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
-    border-radius: 5px;
-    margin-bottom: 15px;
-    padding: 10px;
-    color: white;
-    font-size: 16px;
-    outline: none;
-  }
-  
-  form input::placeholder {
-    color: #ccc;
-  }
-  
-  form .already-account {
-    text-align: right;
-    margin-bottom: 15px;
-  }
-  
-  form .already-account h2 {
-    color: white;
-    text-decoration: none;
-    font-size: 14px;
-  }
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  height: 100vh;
+}
 
-  form .already-account a {
-    color: #3eb2fd;
+/* Side Navbar */
+.side-navbar {
+  width: 250px;
+  background-color: #32599c;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+}
+
+.side-navbar .logo img {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 20px;
+}
+
+.side-navbar .menu {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.side-navbar .menu-item {
+  color: #d1d5db;
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.side-navbar .menu-item:hover,
+.side-navbar .menu-item.active {
+  background-color: #85C226;
+  color: white;
+}
+
+.side-navbar .actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.logo img {
+    width: 40px;
+    height: 40px;
+}
+
+.menu {
+    display: flex;
+    gap: 15px;
+}
+
+.menu-item {
+    color: #d1d5db;
     text-decoration: none;
-    font-size: 14px;
-  }
-  
-  form input[type="submit"] {
-    background: #4CAF50; /* Warna hijau (contoh) */
-    border: none;
-    border-radius: 5px;
-    padding: 10px;
-    font-size: 16px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.menu-item:hover,
+.menu-item.active {
+    background-color: #85C226;
     color: white;
-    cursor: pointer; /* Pointer muncul saat hover */
-    transition: background 0.3s;
-  }
-  
-  form input[type="submit"]:hover {
-    background: #214d23; /* Warna lebih gelap saat hover */
-  }
-  
-    
-  .alert {
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    font-size: 16px;
-    color: #fff;
+}
+
+.actions {
     display: flex;
     align-items: center;
     gap: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    position: relative;
-    animation: slideIn 0.6s ease-in-out;
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
-    border-left: 5px solid #fff;
-    overflow: hidden;
+}
+
+.notification-btn {
+    background: none;
+    border: none;
+    color: #d1d5db;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 3%;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.notification-btn:hover {
+  background-color: #85C226;
+  color: white;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-btn {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  gap: 10px;
+}
+
+.profile-btn img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+}
+
+.profile-btn span {
+  color: #d1d5db;
+  font-size: 16px;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.profile-btn:hover span {
+  color: white;
+}
+
+/* main */
+main{
+justify-content: center;
+margin: 20px;
+width: 100%;
+display: flex;
+align-items: center;
+}
+
+/* Container */
+.register {
+display: flex;
+flex-direction: row;
+background: #32599c;
+border-radius: 15px;
+overflow: hidden;
+width: 500px;
+box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+}
+
+.form-section {
+flex: 1.5;
+padding: 40px;
+color: white;
+flex-direction: column;
+justify-content: center;
+}
+
+.form-section h2 {
+font-size: 24px;
+margin-bottom: 20px;
+}
+
+form {
+display: flex;
+flex-direction: column;
+}
+
+form input {
+background: rgba(255, 255, 255, 0.1);
+border: none;
+border-radius: 5px;
+margin-bottom: 15px;
+padding: 10px;
+color: white;
+font-size: 16px;
+outline: none;
+}
+
+form input::placeholder {
+color: #ccc;
+}
+
+form .already-account {
+text-align: right;
+margin-bottom: 15px;
+}
+
+form .already-account h2 {
+color: white;
+text-decoration: none;
+font-size: 14px;
+}
+
+form .already-account a {
+color: #3eb2fd;
+text-decoration: none;
+font-size: 14px;
+}
+
+form input[type="submit"] {
+background: #85C226; /* Warna hijau (contoh) */
+border: none;
+border-radius: 5px;
+padding: 10px;
+font-size: 16px;
+color: white;
+cursor: pointer; /* Pointer muncul saat hover */
+transition: background 0.3s;
+}
+
+form input[type="submit"]:hover {
+background: #4CAF50; /* Warna lebih gelap saat hover */
+}
+
+.table-user {
+margin: 20px ;
+width: 90%;
+/* background-color: #32599c; */
+border-collapse: collapse;
+font-family: 'Poppins', sans-serif;
+border-radius: 8px;
+overflow: hidden;
+justify-content: center;
+}
+
+.table-user h1 {
+  font-size: 24px; /* Ukuran font */
+  color: #333; /* Warna teks */
+  margin-bottom: 1px; /* Jarak bawah */
+  font-weight: bold; /* Membuat teks tebal */
+  font-family: 'Arial', sans-serif; /* Jenis font */
+  letter-spacing: 1px; /* Jarak antar huruf */
+}
+
+
+.toggle-btn {
+background: none;
+border: none;
+cursor: pointer;
+padding: 8px;
+border-radius: 50%;
+transition: background-color 0.3s;
+}
+
+.toggle-btn:hover {
+background-color: #f1f1f1;
+}
+
+.icon {
+width: 24px;
+height: 24px;
+fill: grey;
+}
+
+.table-user table {
+width: 100%;
+border-collapse: collapse;
+}
+
+.table-user thead {
+background-color: #32599c;
+color: #fff;
+text-align: left;
+font-weight: 600;
+}
+
+.table-user thead th {
+padding: 12px 15px;
+font-size: 16px;
+}
+
+.table-user tbody tr {
+border-bottom: 1px solid #ddd;
+transition: background-color 0.3s;
+}
+
+.table-user tbody tr:nth-child(even) {
+background-color: #f9f9f9;
+}
+
+.table-user tbody tr:hover {
+background-color: #f1f1f1;
+}
+
+.table-user tbody td {
+padding: 12px 15px;
+font-size: 14px;
+color: #333;
+}
+
+.table-user tbody td:first-child {
+font-weight: 600;
+}
+
+.table-user tbody td:last-child {
+text-align: center;
+}
+
+.table-user tbody tr:last-child {
+border-bottom: none;
+}
+
+
+.alert {
+padding: 15px;
+border-radius: 8px;
+margin-bottom: 20px;
+font-size: 16px;
+color: #fff;
+display: flex;
+align-items: center;
+gap: 10px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+position: relative;
+animation: slideIn 0.6s ease-in-out;
+background: linear-gradient(135deg, #e74c3c, #c0392b);
+border-left: 5px solid #fff;
+overflow: hidden;
+}
+
+.alert::before {
+content: "";
+position: absolute;
+top: 0;
+left: 0;
+width: 10px;
+height: 100%;
+background: linear-gradient(135deg, #ff6b6b, #ff3e3e);
+}
+
+.alert i {
+font-size: 20px;
+animation: pop 0.3s ease-out;
+}
+
+.alert-danger {
+background: linear-gradient(135deg, #e74c3c, #c0392b);
+border-left-color: #e74c3c;
+}
+/* Animasi untuk alert */
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
   }
-  
-  .alert::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 10px;
-    height: 100%;
-    background: linear-gradient(135deg, #ff6b6b, #ff3e3e);
+  to {
+    transform: translateX(0);
+    opacity: 1;
   }
-  
-  .alert i {
-    font-size: 20px;
-    animation: pop 0.3s ease-out;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
   }
-  
-  .alert-danger {
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
-    border-left-color: #e74c3c;
+  100% {
+    transform: scale(1);
+    opacity: 1;
   }
-    /* Animasi untuk alert */
-    @keyframes slideIn {
-      from {
-        transform: translateX(-100%);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
-    }
-    
-    @keyframes pop {
-      0% {
-        transform: scale(0.8);
-        opacity: 0;
-      }
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
+}

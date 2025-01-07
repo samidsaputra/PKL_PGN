@@ -1,0 +1,153 @@
+/* Reset */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  height: 100vh;
+}
+
+/* Side Navbar */
+.side-navbar {
+  width: 250px;
+  background-color: #32599c;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+}
+
+.side-navbar .logo img {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 20px;
+}
+
+.side-navbar .menu {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.side-navbar .menu-item {
+  color: #d1d5db;
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.side-navbar .menu-item:hover,
+.side-navbar .menu-item.active {
+  background-color: #85C226;
+  color: white;
+}
+
+.side-navbar .actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.logo img {
+    width: 40px;
+    height: 40px;
+}
+
+.menu {
+    display: flex;
+    gap: 15px;
+}
+
+.menu-item {
+    color: #d1d5db;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.menu-item:hover,
+.menu-item.active {
+    background-color: #85C226;
+    color: white;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notification-btn {
+    background: none;
+    border: none;
+    color: #d1d5db;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 3%;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.notification-btn:hover {
+  background-color: #85C226;
+  color: white;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-btn {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  gap: 10px;
+}
+
+.profile-btn img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+}
+
+.profile-btn span {
+  color: #d1d5db;
+  font-size: 16px;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.profile-btn:hover span {
+  color: white;
+}
+
+
+/* main */
+main{
+display:grid;
+justify-content: left;
+margin-top: 20px;
+width: 100%;
+}
+
+
+.dashboard-header {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
