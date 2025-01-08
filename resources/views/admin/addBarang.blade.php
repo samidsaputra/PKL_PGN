@@ -45,6 +45,10 @@
 
                 <div class="card" style="margin-top: 40px;">
                     <h3>Daftar Barang</h3>
+                    <div class="card" style="margin-top: 20px; display: flex;">
+                        <p>Search:</p>
+                        <input type="text" id="search-bar" placeholder="Cari barang..." class="search-input">
+                    </div>                    
                     <table id="barang-table" border="1" cellspacing="0" cellpadding="10">
                         <thead>
                             <tr>
@@ -218,6 +222,22 @@
             }
         });
     });
+
+    $(document).ready(function () {
+    // Event untuk melakukan pencarian
+    $('#search-bar').on('keyup', function () {
+        let searchTerm = $(this).val().toLowerCase();
+        $('#barang-table tbody tr').each(function () {
+            let rowText = $(this).text().toLowerCase();
+            if (rowText.includes(searchTerm)) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
+});
+
     </script>
 </body>
 </html>
