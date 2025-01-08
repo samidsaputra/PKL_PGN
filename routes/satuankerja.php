@@ -1,30 +1,23 @@
 <?php
 
 use App\Http\Controllers\adminController;
-use App\Http\Controllers\addBarangController;
+use App\Http\Controllers\login;
 use App\Http\Controllers\UserReg;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/dashboard', [adminController::class, 'dashboard'])->name('dashboard');
 
-//CRUD Barang
-Route::get('/daftar-Barang', [addBarangController::class, 'daftarBarang'])->name('daftar.barang');
-Route::post('/create-barang', [addBarangController::class, 'createBarang'])->name('create.barang');
-Route::post('/update-barang/{id}', [addBarangController::class, 'updateBarang'])->name('update.barang');
-Route::delete('/barang/{id}', [addBarangController::class, 'deleteBarang'])->name('delete.barang');
 
-//CRUD Satuan Kerja
 Route::get('/satker', [UserReg::class, 'daftarSatker'])->name('daftar.satker');
 Route::post('/satker/create', [UserReg::class, 'createSatker'])->name('createSatker');
 Route::put('/update-satker/{nama}', [UserReg::class, 'updateSatker'])->name('update.satker');
 Route::delete('/delete-satker/{nama}', [UserReg::class, 'deleteSatker'])->name('delete.satker');
 
 
-//CRUD User Register
-Route::get('/UserReg', [UserReg::class, 'UserReg'])->name('UserRegistration');
-Route::post('/UserReg', [UserReg::class, 'store'])->name('register.store');
+Route::get('/register', [UserReg::class, 'index'])->name('register');
+Route::post('/register', [UserReg::class, 'store'])->name('register.store');
 
+// You might want to add these additional user management routes:
 Route::get('/users', [UserReg::class, 'index'])->name('users.index');
 Route::get('/users/{user}/edit', [UserReg::class, 'edit'])->name('users.edit');
 Route::put('/users/{user}', [UserReg::class, 'update'])->name('users.update');

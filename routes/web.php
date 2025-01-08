@@ -13,6 +13,7 @@ Route::get('/logout', [login::class, 'logout']);
 
 // rute role admin
 require base_path('routes/admin.php');
+require base_path('routes/satuankerja.php');
 
 // rute role aprovel
 require base_path('routes/aprove.php');

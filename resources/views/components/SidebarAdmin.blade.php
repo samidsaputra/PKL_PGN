@@ -1,7 +1,7 @@
 <style>
 /* Side Navbar */
 .side-navbar {
-  width: 250px;
+  width: 200px;
   background-color: #32599c;
   color: white;
   display: flex;
@@ -9,6 +9,8 @@
   justify-content: space-between;
   padding: 20px;
   box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  height: 97%;
 }
 
 .side-navbar .logo img {
@@ -135,7 +137,7 @@
     <div class="menu">
         <a href="{{ route('dashboard') }}" class="menu-item {{ Request::is('dashboard') ? 'active' : '' }}">Dashboard</a>
         <a href="{{ route('UserRegistration') }}" class="menu-item {{ Request::is('UserReg') ? 'active' : '' }}">User</a>
-        <a href="{{ route('satuankerja') }}" class="menu-item {{ Request::is('satker') ? 'active' : '' }}">Satuan Kerja</a>
+        <a href="{{ route('daftar.satker') }}" class="menu-item {{ Request::is('satker') ? 'active' : '' }}">Satuan Kerja</a>
         <a href="{{ route('daftar.barang') }}" class="menu-item {{ Request::is('daftar-Barang') ? 'active' : '' }}">Barang</a>
         <a href="#" class="menu-item {{ Request::is('stok') ? 'active' : '' }}">Stok</a>
     </div>
