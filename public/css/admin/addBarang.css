@@ -204,7 +204,6 @@ button.submit-btn {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    width: 100%; /* Make the submit button stretch to the full width */
 }
 
 button.submit-btn:hover {
@@ -292,9 +291,8 @@ table td button:hover {
     }
 }
 
-/* Gaya untuk modal */
 .modal {
-    display: none; /* Tersembunyi secara default */
+    display: none;
     position: fixed;
     z-index: 1;
     left: 0;
@@ -357,3 +355,12 @@ table td button.delete-btn {
 table td button.delete-btn:hover {
     background-color: #c82333; /* Merah lebih gelap saat hover */
 }
+
+.search-input {
+    padding: 10px;
+    font-size: 12px;
+    border: 0.5px solid #ccc;
+    border-radius: 5px;
+}
+
+
