@@ -9,11 +9,10 @@ Route::get('/login', [login::class, 'index'])->name('login');
 Route::post('/login', [login::class, 'login']);
 Route::get('/logout', [login::class, 'logout']);
 
-
+Route::get('/dashboard', [login::class, 'dashboard'])->name('dashboard');
 
 // rute role admin
 require base_path('routes/admin.php');
-require base_path('routes/satuankerja.php');
 
 // rute role aprovel
 require base_path('routes/aprove.php');

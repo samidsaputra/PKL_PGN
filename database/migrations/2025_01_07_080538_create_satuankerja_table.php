@@ -13,10 +13,9 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('satuan_kerja', function (Blueprint $table) {
+            $table->string('id');
             $table->string('nama')->primary(); // Satuan Kerja sebagai primary key
-            $table->string('contact'); // Nomor Telepon
-            $table->string('email')->unique(); // Email harus unik
-            $table->string('PIC'); // Nama PIC
+            $table->string('perusahaan'); // Nama perusahaan
         });
     }
 

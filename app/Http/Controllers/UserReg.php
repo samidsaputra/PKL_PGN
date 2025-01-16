@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Str;
 
 class UserReg extends Controller
 {
@@ -22,10 +23,9 @@ class UserReg extends Controller
     public function createSatker(Request $request)
     {
         $request->validate([
+            'id' => 'required|unique:satuan_kerja,nama|max:3',
             'nama' => 'required|unique:satuan_kerja,nama|max:255',
-            'contact' => 'required|max:15',
-            'email' => 'required|email|unique:satuan_kerja,email',
-            'PIC' => 'required|max:255',
+            'perusahaan' => 'required|max:255',
         ]);
 
         SatuanKerja::create($request->all());
@@ -37,13 +37,13 @@ class UserReg extends Controller
     public function updateSatker(Request $request, $nama)
     {
         $request->validate([
-            'contact' => 'required|max:15',
-            'email' => 'required|email|unique:satuan_kerja,email,' . $nama . ',nama',
-            'PIC' => 'required|max:255',
+            'id' => 'required|unique:satuan_kerja,nama|max:3',
+            'perusahaan' => 'required|max:255',
         ]);
 
         $satker = SatuanKerja::findOrFail($nama);
-        $satker->update($request->only(['contact', 'email', 'PIC']));
+        $satker->update($request->only(['perusahaan']));
+        $satker->update($request->only(['id']));
 
         return response()->json(['success' => true, 'message' => 'Satuan Kerja berhasil diperbarui.']);
     }
@@ -60,10 +60,11 @@ class UserReg extends Controller
     /**
      * User Registration
      */
-    public function UserReg(){
-        
+    public function UserReg()
+    {
         $users = User::all();
-        return view('admin.UserRegistration', compact('users'));
+        $satuanKerja = SatuanKerja::all(); // Ambil data Satuan Kerja
+        return view('admin.UserRegistration', compact('users', 'satuanKerja'));
     }
 
     /**
@@ -77,14 +78,20 @@ class UserReg extends Controller
             'password' => ['required', 'confirmed', Password::defaults()],
             'role' => ['required', 'string', 'in:Requester,Approver,admin'],
         ]);
-
+    
+        // Generate random ID 5 karakter
+        do {
+            $id = Str::random(5); // Kombinasi huruf dan angka
+        } while (User::where('id', $id)->exists()); // Pastikan ID unik
+    
         $user = User::create([
+            'id' => $id,
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
         ]);
-
+    
         return redirect()->back()->with('success', 'User created successfully');
     }
 
