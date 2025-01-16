@@ -33,14 +33,21 @@
             
                 <form action="{{ route('register.store') }}" method="POST">
                     @csrf
-                    <input type="text" name="name" value="{{ old('name') }}" placeholder="Enter Satuan Kerja" required>
+                    <input type="email" name="email" value="{{ old('email') }}" placeholder="Enter Email" required>
                     <select name="role" required>
                         <option value="" disabled selected>Select Role</option>
                         <option value="Requester" {{ old('role') == 'Requester' ? 'selected' : '' }}>Requester</option>
                         <option value="Approver" {{ old('role') == 'Approver' ? 'selected' : '' }}>Approver</option>
                         <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
                     </select>
-                    <input type="email" name="email" value="{{ old('email') }}" placeholder="Enter Email" required>
+                    <select name="name" required>
+                        <option value="" disabled selected>Select Satuan Kerja</option>
+                        @foreach($satuanKerja as $satker)
+                            <option value="{{ $satker->nama }}" {{ old('name') == $satker->nama ? 'selected' : '' }}>
+                                {{ $satker->nama }}
+                            </option>
+                        @endforeach
+                    </select>
                     <input type="password" name="password" placeholder="Enter Password" required>
                     <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
                     <input type="submit" value="Create User">

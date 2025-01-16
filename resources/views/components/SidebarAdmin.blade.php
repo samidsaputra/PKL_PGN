@@ -1,158 +1,230 @@
+<link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+<link href="https://cdn.lineicons.com/5.0/lineicons.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 <style>
-/* Side Navbar */
-.side-navbar {
-  width: 200px;
-  background-color: #32599c;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 20px;
-  box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
-  position: fixed;
-  height: 97%;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+::after,
+::before {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-.side-navbar .logo img {
-  width: 40px;
-  height: 40px;
-  margin-bottom: 20px;
-}
-
-.side-navbar .menu {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.side-navbar .menu-item {
-  color: #d1d5db;
-  text-decoration: none;
-  padding: 10px 15px;
-  border-radius: 4px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.side-navbar .menu-item:hover,
-.side-navbar .menu-item.active {
-  background-color: #85C226;
-  color: white;
-}
-
-.side-navbar .actions {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
-}
-
-.logo img {
-    width: 40px;
-    height: 40px;
-}
-
-.menu {
-    display: flex;
-    gap: 15px;
-}
-
-.menu-item {
-    color: #d1d5db;
+a {
     text-decoration: none;
-    padding: 8px 12px;
-    border-radius: 4px;
-    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.menu-item:hover,
-.menu-item.active {
-    background-color: #85C226;
-    color: white;
+li {
+    list-style: none;
 }
 
-.actions {
+h1 {
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.wrapper {
     display: flex;
-    align-items: center;
-    gap: 10px;
 }
 
-.notification-btn {
-    background: none;
-    border: none;
-    color: #d1d5db;
+.main {
+    min-height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    transition: all 0.35s ease-in-out;
+    background-color: #fafbfe;
+}
+
+#sidebar {
+    width: 70px;
+    min-width: 70px;
+    z-index: 1000;
+    transition: all .25s ease-in-out;
+    background-color: #0e2238;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100%;
+}
+
+#sidebar.expand {
+    width: 260px;
+    min-width: 260px;
+}
+
+.toggle-btn {
+    background-color: transparent;
     cursor: pointer;
-    padding: 8px;
-    border-radius: 3%;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    border: 0;
+    padding: 1rem 1.5rem;
 }
 
-.notification-btn:hover {
-  background-color: #85C226;
-  color: white;
+.toggle-btn i {
+    font-size: 1.5rem;
+    color: #FFF;
 }
 
-.icon {
-    width: 24px;
-    height: 24px;
-    fill: currentColor;
+.sidebar-logo {
+    margin: auto 0;
 }
 
-.profile {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.sidebar-logo a {
+    color: #FFF;
+    font-size: 1.15rem;
+    font-weight: 600;
 }
 
-.profile-btn {
-  display: flex;
-  align-items: center;
-  background: none;
-  border: none;
-  cursor: pointer;
-  gap: 10px;
+#sidebar:not(.expand) .sidebar-logo,
+#sidebar:not(.expand) a.sidebar-link span {
+    display: none;
 }
 
-.profile-btn img {
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
+.sidebar-nav {
+    padding: 2rem 0;
+    flex: 1 1 auto;
 }
 
-.profile-btn span {
-  color: #d1d5db;
-  font-size: 16px;
-  font-weight: bold;
-  transition: color 0.3s ease;
+a.sidebar-link {
+    padding: .625rem 1.625rem;
+    color: #FFF;
+    display: block;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    border-left: 3px solid transparent;
 }
 
-.profile-btn:hover span {
-  color: white;
+.sidebar-link i {
+    font-size: 1.1rem;
+    margin-right: .75rem;
+}
+
+a.sidebar-link:hover {
+    background-color: rgba(255, 255, 255, .075);
+    border-left: 3px solid #3b7ddd;
+}
+
+.sidebar-item {
+    position: relative;
+}
+
+#sidebar:not(.expand) .sidebar-item .sidebar-dropdown {
+    position: absolute;
+    top: 0;
+    left: 70px;
+    background-color: #0e2238;
+    padding: 0;
+    min-width: 15rem;
+    display: none;
+}
+
+#sidebar:not(.expand) .sidebar-item:hover .has-dropdown+.sidebar-dropdown {
+    display: block;
+    max-height: 15em;
+    width: 100%;
+    opacity: 1;
+}
+
+#sidebar.expand .sidebar-link[data-bs-toggle="collapse"]::after {
+    border: solid;
+    border-width: 0 .075rem .075rem 0;
+    content: "";
+    display: inline-block;
+    padding: 2px;
+    position: absolute;
+    right: 1.5rem;
+    top: 1.4rem;
+    transform: rotate(-135deg);
+    transition: all .2s ease-out;
+}
+
+#sidebar.expand .sidebar-link[data-bs-toggle="collapse"].collapsed::after {
+    transform: rotate(45deg);
+    transition: all .2s ease-out;
 }
 </style>
-<div class="side-navbar">
-    <div class="logo">
-        <img src="https://via.placeholder.com/40" alt="Logo">
-    </div>
-    <div class="menu">
-        <a href="{{ route('dashboard') }}" class="menu-item {{ Request::is('dashboard') ? 'active' : '' }}">Dashboard</a>
-        <a href="{{ route('UserRegistration') }}" class="menu-item {{ Request::is('UserReg') ? 'active' : '' }}">User</a>
-        <a href="{{ route('daftar.satker') }}" class="menu-item {{ Request::is('satker') ? 'active' : '' }}">Satuan Kerja</a>
-        <a href="{{ route('daftar.barang') }}" class="menu-item {{ Request::is('daftar-Barang') ? 'active' : '' }}">Barang</a>
-        <a href="#" class="menu-item {{ Request::is('stok') ? 'active' : '' }}">Stok</a>
-    </div>
-    <div class="actions">
-        <button class="notification-btn">
-            <span class="sr-only">View notifications</span>
-            <svg viewBox="0 0 24 24" class="icon">
-                <path d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"></path>
-            </svg>
-        </button>
-        <div class="profile">
-            <button class="profile-btn">
-                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="User">
-                <span>Profile</span>
-            </button>
-        </div>
-    </div>
-</div>
+<aside id="sidebar">
+  <div class="d-flex">
+      <button class="toggle-btn" type="button">
+        <i class="lni lni-dashboard-square-1"></i>
+      </button>
+      <div class="sidebar-logo">
+          <a href="#">CodzSword</a>
+      </div>
+  </div>
+  <ul class="sidebar-nav">
+      <li class="sidebar-item">
+          <a href="{{ route('dashboard')}}" class="sidebar-link">
+            <i class="lni lni-home-2"></i>  
+              <span>Dashboard</span>
+          </a>
+      </li>
+      <li class="sidebar-item">
+          <a href="#" class="sidebar-link">
+              <i class="lni lni-agenda"></i>
+              <span>Task</span>
+          </a>
+      </li>
+      <li class="sidebar-item">
+          <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+              data-bs-target="#org" aria-expanded="false" aria-controls="org">
+              <i class="lni lni-user-multiple-4"></i>
+              <span>Organization</span>
+          </a>
+          <ul id="org" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+              <li class="sidebar-item">
+                  <a href="{{ route('UserRegistration')}}" class="sidebar-link">User</a>
+              </li>
+              <li class="sidebar-item">
+                  <a href="{{ route('daftar.satker')}}" class="sidebar-link">Satuan Kerja</a>
+              </li>
+          </ul>
+      </li>
+      <li class="sidebar-item">
+          <a class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+              data-bs-target="#str" aria-expanded="false" aria-controls="str">
+              <i class="lni lni-box-archive-1"></i>
+              <span>Storage</span>
+          </a>
+          <ul id="str" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+              <li class="sidebar-item">
+                  <a href="{{ route('daftar.barang')}}" class="sidebar-link">Data Sovenir</a>
+              </li>
+              <li class="sidebar-item">
+                  <a href="{{ route('daftar.satker')}}" class="sidebar-link">Data Pesanan</a>
+              </li>
+          </ul>
+      </li>
+      <li class="sidebar-item">
+        <a href="#" class="sidebar-link">
+          <i class="lni lni-gear-1"></i>
+          <span>Setting</span>
+        </a>
+      </li>
+    </ul>
+    <div class="sidebar-footer">
+      <a href="#" class="sidebar-link">
+          <i class="lni lni-popup"></i>
+          <span>Notification</span>
+      </a>
+      <a href="/logout" class="sidebar-link">
+          <i class="lni lni-exit"></i>
+          <span>Logout</span>
+      </a>
+  </div>
+</aside>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+crossorigin="anonymous"></script>
+<script>
+const hamBurger = document.querySelector(".toggle-btn");
+
+hamBurger.addEventListener("click", function () {
+  document.querySelector("#sidebar").classList.toggle("expand");
+});
+</script>
