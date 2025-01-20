@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'name' => 'Admin User',
-                'email' => 'admin@example.com',
+                'email' => 'admin@gmail.com',
                 'password' => Hash::make('password'),
                 'role' => 'admin',
                 'created_at' => now(),
