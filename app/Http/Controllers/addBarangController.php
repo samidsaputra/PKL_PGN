@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\Kategori;
 use App\Models\Barang;
 use Illuminate\Http\Request;
 
@@ -9,53 +10,68 @@ class addBarangController extends Controller
     // Menampilkan daftar barang
     public function daftarBarang()
     {
-        // Mengambil semua data barang dari database
-        $barang = Barang::all();
-
-        return view('admin/addBarang', compact('barang'));
+        $barang = Barang::with('kategori')->get(); // Relasi untuk mengambil nama kategori
+        $kategori = Kategori::all(); // Mengambil semua kategori untuk dropdown
+        return view('admin.addBarang', compact('barang', 'kategori'));
     }
 
 
-    // Menambahkan barang ke dalam database
     public function createBarang(Request $request)  
     {  
+        // Validasi input
         $validated = $request->validate([  
             'id' => 'required|string|unique:barang,id',
             'Nama_Barang' => 'required|string|max:255',  
-            'Kategori' => 'required|string',  
+            'Kategori_Id' => 'required|exists:kategori,id',  // Validasi berdasarkan ID kategori
             'Deskripsi' => 'required|string|max:255',  
         ]);  
-    
+
+        // Ambil nama kategori berdasarkan ID yang dipilih
+        $kategori = Kategori::find($validated['Kategori_Id']); // Ambil kategori berdasarkan ID
+
+        // Menambahkan barang baru ke dalam database
         $barang = Barang::create([  
-            'id'=> $validated['id'],
+            'id' => $validated['id'],
             'Nama_Barang' => $validated['Nama_Barang'],  
-            'Kategori' => $validated['Kategori'],  
+            'Kategori_Id' => $validated['Kategori_Id'],  // Simpan ID kategori
+            'Kategori' => $kategori->Kategori,  // Simpan nama kategori dari tabel kategori
             'Deskripsi' => $validated['Deskripsi'],  
         ]);  
-    
-        // Kembalikan response sukses dalam format JSON  
+        
         return response()->json([  
             'success' => true,  
-            'message' => 'barang berhasil ditambahkan!',  
+            'message' => 'Barang berhasil ditambahkan!',  
             'data' => $barang 
         ]);  
     }
+
+    
     public function updateBarang(Request $request, $id)
     {
         // Validasi input
         $validated = $request->validate([
             'Nama_Barang' => 'required|string|max:255',
-            'Kategori' => 'required|string',
+            'Kategori_Id' => 'required|exists:kategori,id',  // Validasi kategori berdasarkan ID
             'Deskripsi' => 'required|string|max:255',
         ]);
 
-        // Cari barang berdasarkan ID dan update
+        // Cari barang berdasarkan ID
         $barang = Barang::findOrFail($id);
-        $barang->update($validated);
 
-        // Redirect dengan pesan sukses
-        return redirect()->route('daftar.barang')->with('success', 'Barang berhasil diperbarui!');
+        // Ambil nama kategori berdasarkan ID yang dipilih
+        $kategori = Kategori::find($validated['Kategori_Id']);
+
+        // Update barang dengan kategori yang baru
+        $barang->update([
+            'Nama_Barang' => $validated['Nama_Barang'],
+            'Kategori_Id' => $validated['Kategori_Id'],  // Update Kategori_Id
+            'Kategori' => $kategori->Kategori,  // Update kolom Kategori dengan nama kategori
+            'Deskripsi' => $validated['Deskripsi']
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Barang berhasil diperbarui.']);
     }
+
 
     public function deleteBarang($id)
     {
