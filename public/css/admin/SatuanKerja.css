@@ -11,12 +11,11 @@
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
-    background-color: var(--background-color);
-    color: var(--text-color);
     margin: 0;
     padding: 0;
-    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    display: flex;
+    height: 100vh;
     display: flex;
 }
 
@@ -47,7 +46,8 @@ main {
 }
 
 .form-section input[type="text"],
-.form-section input[type="email"] {
+.form-section input[type="email"],
+.modal-content input[type="text"] {
     padding: 0.8rem;
     border: 1px solid #ddd;
     border-radius: var(--border-radius);
@@ -56,7 +56,8 @@ main {
 }
 
 .form-section input[type="text"]:focus,
-.form-section input[type="email"]:focus {
+.form-section input[type="email"]:focus,
+.modal-content input[type="text"]:focus {
     border-color: var(--primary-color);
     outline: none;
     box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);

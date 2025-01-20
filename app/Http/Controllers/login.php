@@ -7,14 +7,13 @@ use Illuminate\Support\Facades\Auth;
 
 class login extends Controller
 {
-    public function index(){
-
+    public function index()
+    {
         return view('login');
     }
-     // Proses login
+
     public function login(Request $request)
     {
-        // Validasi input login
         $request->validate([
             'email' => 'required|email',
             'password' => 'required'
@@ -24,51 +23,36 @@ class login extends Controller
             'email.email' => 'Format email tidak valid',
         ]);
 
-        $credentials = [
-            'email' => $request->email,
-            'password' => $request->password,
-        ];
+        $credentials = $request->only('email', 'password');
 
-        // Autentikasi
         if (Auth::attempt($credentials)) {
-            // Ambil role pengguna
             $role = Auth::user()->role;
-
-            // Simpan role ke session
             session(['role' => $role]);
-
-            // Redirect ke dashboard
             return redirect()->route('dashboard');
         }
 
-        // Jika login gagal
         return redirect('/')
             ->withErrors('Email atau password salah')
             ->withInput();
     }
 
-    // Menampilkan dashboard berdasarkan role
     public function dashboard()
     {
-        // Ambil role dari session
         $role = session('role');
 
-        // Logika untuk mengarahkan berdasarkan role
         switch ($role) {
             case 'Requester':
                 return view('Requester.dashboard');
             case 'Approver':
                 return view('Approver.dashboard');
-            case 'Admin':
+            case 'admin':
                 return view('admin.dashboard');
             default:
-                // Logout jika role tidak valid
                 Auth::logout();
                 return redirect('/')->withErrors('Role tidak dikenali');
         }
     }
 
-    // Proses logout
     public function logout()
     {
         Auth::logout();

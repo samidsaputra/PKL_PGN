@@ -23,9 +23,8 @@
                 <form id="create-form" action="{{ route('createSatker') }}" method="POST">
                     @csrf
                     <input type="text" name="nama" value="{{ old('nama') }}" placeholder="Enter Satuan Kerja" required>
-                    <input type="text" name="contact" value="{{ old('contact') }}" placeholder="Enter No Telfon" required>
-                    <input type="email" name="email" value="{{ old('email') }}" placeholder="Enter Email" required>
-                    <input type="text" name="PIC" value="{{ old('PIC') }}" placeholder="Enter Nama PIC" required>
+                    <input type="text" name="id" value="{{ old('id') }}" placeholder="Enter ID" required>
+                    <input type="text" name="perusahaan" value="{{ old('perusahaan') }}" placeholder="Enter Perusahaan" required>
                     <input type="submit" value="Input">
                 </form>
             </div>
@@ -36,9 +35,8 @@
                 <thead>
                     <tr>
                         <th>Satuan Kerja</th>
-                        <th>Contact</th>
-                        <th>Email</th>
-                        <th>Person In Charge</th>
+                        <th>ID</th>
+                        <th>Perusahaan</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -46,17 +44,14 @@
                     @foreach($satuan_kerja as $satker)
                     <tr>
                         <td>{{ $satker->nama }}</td>
-                        <td>{{ $satker->contact }}</td>
-                        <td>{{ $satker->email }}</td>
-                        <td>{{ $satker->PIC }}</td>
+                        <td>{{ $satker->id }}</td>
+                        <td>{{ $satker->perusahaan }}</td>
                         <td>
                             <button 
                                 type="button" 
                                 class="edit-btn" 
                                 data-nama="{{ $satker->nama }}" 
-                                data-contact="{{ $satker->contact }}" 
-                                data-email="{{ $satker->email }}" 
-                                data-pic="{{ $satker->PIC }}">
+                                data-contact="{{ $satker->perusahaan }}" >
                                 Edit
                             </button>
                             <button 
@@ -75,28 +70,23 @@
             <div class="modal-content">
                 <span class="close-btn">&times;</span>
                 <h3>Edit Satuan Kerja</h3>
-                <form id="edit-form" method="POST">
+                <form id="edit-form" method="PUT">
                     @csrf
                     @method('PUT')
                     <input type="hidden" id="edit-nama" name="nama">
                     <div class="form-group">
-                        <label for="edit-contact">Contact:</label>
-                        <input type="text" id="edit-contact" name="contact" required>
+                        <label for="edit-id">ID:</label>
+                        <input type="text" id="edit-id" name="id" required>
                     </div>
                     <div class="form-group">
-                        <label for="edit-email">Email:</label>
-                        <input type="email" id="edit-email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-PIC">PIC:</label>
-                        <input type="text" id="edit-PIC" name="PIC" required>
+                        <label for="edit-perusahaan">Perusahaan:</label>
+                        <input type="text" id="edit-perusahaan" name="perusahaan" required>
                     </div>
                     <button type="submit" class="submit-btn">Simpan Perubahan</button>
                 </form>
             </div>
         </div>
-
-
+    </main>
         <script>
         $(document).ready(function() {
             $.ajaxSetup({
@@ -138,14 +128,12 @@
             // Edit button click handler
             $('.edit-btn').on('click', function() {
                 const nama = $(this).data('nama');
-                const contact = $(this).data('contact');
-                const email = $(this).data('email');
-                const pic = $(this).data('pic');
+                const id = $(this).data('id');
+                const perusahaan = $(this).data('perusahaan');
 
                 $('#edit-nama').val(nama);
-                $('#edit-contact').val(contact);
-                $('#edit-email').val(email);
-                $('#edit-PIC').val(pic);
+                $('#edit-id').val(id);
+                $('#edit-perusahaan').val(perusahaan);
 
                 const updateUrl = "{{ route('update.satker', ':nama') }}".replace(':nama', encodeURIComponent(nama));
                 $('#edit-form').attr('action', updateUrl);
@@ -161,7 +149,7 @@
 
                 $.ajax({
                     url: url,
-                    type: 'POST',
+                    type: 'PUT',
                     data: form.serialize(),
                     success: function(response) {
                         $('#editModal').hide();

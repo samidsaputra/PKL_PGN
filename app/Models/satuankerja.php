@@ -18,9 +18,8 @@ class SatuanKerja extends Model
     public $timestamps = false;
     
     protected $fillable = [
+        'id',
         'nama',
-        'contact',
-        'email',
-        'PIC',
+        'perusahaan',
     ];
 }

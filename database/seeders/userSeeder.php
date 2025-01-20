@@ -5,39 +5,37 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Nette\Utils\Random;
 
 class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
-    public function run(): void
+    public function run()
     {
-        User::insert([
-            [
-                'name' => 'John Doe',
-                'email' => 'john@gmail.com',
-                'password' => Hash::make('password'),
-                'role' => 'Requester',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'name' => 'Jane Smith',
-                'email' => 'jane@gmail.com',
-                'password' => Hash::make('password'),
-                'role' => 'Approver',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'name' => 'Admin User',
-                'email' => 'admin@gmail.com',
-                'password' => Hash::make('password'),
-                'role' => 'admin',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+        User::create([
+            'id' => (string) \Illuminate\Support\Str::uuid(),
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'admin',
+        ]);
+
+        User::create([
+            'id' => (string) \Illuminate\Support\Str::uuid(),
+            'name' => 'Requester User',
+            'email' => 'requester@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'Requester',
+        ]);
+
+        User::create([
+            'id' => (string) \Illuminate\Support\Str::uuid(),
+            'name' => 'Approver User',
+            'email' => 'approver@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'Approver',
         ]);
     }
 }
