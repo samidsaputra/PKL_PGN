@@ -30,20 +30,20 @@
         @csrf
         <div class="form-group">
           <label for="acara">Nama Acara:</label>
-          <input type="text" name="acara" id="acara" placeholder="Masukkan Nama Acara" required>
+          <input type="text" name="acara" value="{{ old('acara')}}" placeholder="Masukkan Nama Acara" required>
         </div>
         <div class="form-group">
           <label for="tanggal_acara">Tanggal Acara:</label>
-          <input type="date" name="tanggal_acara" id="tanggal_acara" required>
+          <input type="date" name="tanggal_acara" value="{{ old('tanggal_acara')}}" required>
         </div>
         <div class="form-group">
           <label for="tanggal_yang_diharapkan">Tanggal yang Diharapkan:</label>
-          <input type="date" name="tanggal_yang_diharapkan" id="tanggal_yang_diharapkan" required>
+          <input type="date" name="tanggal_yang_diharapkan" value="{{ old('tanggal_yang_diharapkan')}}" required>
         </div>
         <div id="cart-items-container">
           <!-- Items dari cart akan dimasukkan di sini -->
         </div>
-        <button type="submit" class="checkout-btn">Order</button>
+        <button type="submit" class="checkout-btn" value="Order">Order</button>
       </form>
     </div>
   </div>
@@ -137,7 +137,7 @@
         `;
       });
     }
-document.getElementById('checkoutForm').addEventListener('submit', async function(e) {
+    document.getElementById('checkoutForm').addEventListener('submit', async function(e) {
   e.preventDefault();
 
   if (cart.length === 0) {

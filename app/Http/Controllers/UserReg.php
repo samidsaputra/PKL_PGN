@@ -77,30 +77,48 @@ class UserReg extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Password::defaults()],
             'role' => ['required', 'string', 'in:Requester,Approver,admin'],
+            'satuan_kerja' => ['nullable', 'string', 'max:200'], // Validasi untuk satuan kerja
         ]);
-    
+
         // Generate random ID 5 karakter
         do {
             $id = Str::random(5); // Kombinasi huruf dan angka
-        } while (User::where('id', $id)->exists()); // Pastikan ID unik
-    
-        $user = User::create([
+        } while (User::where('id', $id)->exists());
+
+        User::create([
             'id' => $id,
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
+            'satuan_kerja' => $request->satuan_kerja,
         ]);
-    
+
         return redirect()->back()->with('success', 'User created successfully');
     }
+
+    /**
+     * Reset the password for the specified user to a default value.
+     */
+    public function resetToDefaultPassword(User $user)
+    {
+        $defaultPassword = 'password123'; // Default password
+
+        $user->update([
+            'password' => Hash::make($defaultPassword),
+        ]);
+
+        return redirect()->back()->with('success', 'Password has been reset to the default value.');
+    }
+
 
     /**
      * Show the form for editing the specified user.
      */
     public function edit(User $user)
     {
-        return view('auth.edit', compact('user'));
+        $satuanKerja = SatuanKerja::all(); // Ambil data satuan kerja
+        return view('auth.edit', compact('user', 'satuanKerja'));
     }
 
     /**
@@ -112,19 +130,21 @@ class UserReg extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
             'role' => ['required', 'string', 'in:Requester,Approver,admin'],
+            'satuan_kerja' => ['nullable', 'string', 'max:200'],
         ]);
 
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
             'role' => $request->role,
+            'satuan_kerja' => $request->satuan_kerja,
         ]);
 
         if ($request->filled('password')) {
             $request->validate([
                 'password' => ['required', 'confirmed', Password::defaults()],
             ]);
-            
+
             $user->update([
                 'password' => Hash::make($request->password),
             ]);

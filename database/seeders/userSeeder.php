@@ -15,27 +15,12 @@ class UserSeeder extends Seeder
     public function run()
     {
         User::create([
-            'id' => (string) \Illuminate\Support\Str::uuid(),
-            'name' => 'Admin User',
+            'id' => 'CSS001', // UUID sebagai primary key
+            'name' => 'Admin',
             'email' => 'admin@example.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('shaqi123'), // Password default
             'role' => 'admin',
-        ]);
-
-        User::create([
-            'id' => (string) \Illuminate\Support\Str::uuid(),
-            'name' => 'Requester User',
-            'email' => 'requester@example.com',
-            'password' => Hash::make('password'),
-            'role' => 'Requester',
-        ]);
-
-        User::create([
-            'id' => (string) \Illuminate\Support\Str::uuid(),
-            'name' => 'Approver User',
-            'email' => 'approver@example.com',
-            'password' => Hash::make('password'),
-            'role' => 'Approver',
+            'satuan_kerja' => 'CSS', // Atur sesuai kebutuhan, bisa null
         ]);
     }
 }

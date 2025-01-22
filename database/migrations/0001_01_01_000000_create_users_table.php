@@ -19,6 +19,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['Requester', 'Approver', 'admin']);
+            $table->string('satuan_kerja')->nullable(); // Kolom baru untuk satuan kerja
             $table->rememberToken();
             $table->timestamps();
         });

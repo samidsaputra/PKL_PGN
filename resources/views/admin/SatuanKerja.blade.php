@@ -51,7 +51,8 @@
                                 type="button" 
                                 class="edit-btn" 
                                 data-nama="{{ $satker->nama }}" 
-                                data-contact="{{ $satker->perusahaan }}" >
+                                data-perusahaan="{{ $satker->perusahaan }}"
+                                data-id="{{ $satker->id}}" >
                                 Edit
                             </button>
                             <button 
