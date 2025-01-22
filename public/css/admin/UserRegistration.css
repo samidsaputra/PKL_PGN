@@ -21,7 +21,10 @@ body {
 
 main {
   padding: 2rem;
-  margin-left: 250px; /* Adjust based on your sidebar width */
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
 }
 
 /* Form Section Styles */
@@ -39,13 +42,14 @@ main {
   font-size: 1.5rem;
 }
 
-.form-section form {
+#user-form{
   display: grid;
   gap: 1rem;
   min-width: 600px;
 }
 
 .form-section input[type="email"],
+.form-section input[type="text"],
 .form-section input[type="password"],
 .form-section select {
   padding: 0.8rem;

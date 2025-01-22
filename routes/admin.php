@@ -27,3 +27,4 @@ Route::get('/admin/users', [UserReg::class, 'index'])->name('users.index');
 Route::get('/admin/users/{user}/edit', [UserReg::class, 'edit'])->name('users.edit');
 Route::put('/admin/users/{user}', [UserReg::class, 'update'])->name('users.update');
 Route::delete('/admin/users/{user}', [UserReg::class, 'destroy'])->name('users.destroy');
+Route::put('/admin/users/{user}/reset-password', [UserReg::class, 'resetToDefaultPassword'])->name('users.resetDefaultPassword');
