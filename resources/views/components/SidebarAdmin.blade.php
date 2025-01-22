@@ -198,6 +198,9 @@ a.sidebar-link:hover {
               <li class="sidebar-item">
                   <a href="{{ route('daftar.satker')}}" class="sidebar-link">Data Pesanan</a>
               </li>
+              <li class="sidebar-item">
+                <a href="{{ route('kategori.index')}}" class="sidebar-link">Data Kategori</a>
+            </li>
           </ul>
       </li>
       <li class="sidebar-item">
