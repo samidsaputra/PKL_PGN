@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,11 +13,15 @@ return new class extends Migration
     public function up()
     {
         Schema::create('barang', function (Blueprint $table) {
-            $table->string('id')->primary(); // Kolom id otomatis auto-increment
-            $table->string('Nama_Barang'); // Kolom nama_barang (string)
-            $table->string('Kategori'); // Kolom kategori (string)
-            $table->string('Deskripsi');
+            $table->string('id')->primary(); // Kolom id sebagai primary key
+            $table->string('Nama_Barang'); // Kolom nama_barang
+            $table->unsignedBigInteger('Kategori_Id'); // Kolom kategori sebagai foreign key
+            $table->string('Kategori');
+            $table->string('Deskripsi'); // Kolom deskripsi
             $table->timestamps(); // Kolom created_at dan updated_at
+
+            // Menambahkan foreign key constraint
+            $table->foreign('Kategori_Id')->references('id')->on('kategori')->onDelete('cascade');
         });
     }
 
