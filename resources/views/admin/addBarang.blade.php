@@ -131,72 +131,72 @@
 
         });
         $(document).on('click', '.edit-btn', function () {
-    let id = $(this).data('id');
-    let nama = $(this).data('nama');
-    let kategoriId = $(this).data('kategori');
-    let deskripsi = $(this).data('deskripsi');
+            let id = $(this).data('id');
+            let nama = $(this).data('nama');
+            let kategoriId = $(this).data('kategori');
+            let deskripsi = $(this).data('deskripsi');
 
-    Swal.fire({
-        title: 'Edit Barang',
-        html: `
-            <input type="hidden" id="edit-id" value="${id}">
-            <div class="form-group">
-                <label>Nama Barang:</label>
-                <input type="text" id="edit-Nama_Barang" class="swal2-input" value="${nama}">
-            </div>
-            <div class="form-group">
-                <label>Kategori:</label>
-                <select id="edit-Kategori" class="swal2-input">
-                    @foreach ($kategori as $kategoris)
-                        <option value="{{ $kategoris->id }}" ${kategoriId == {{ $kategoris->id }} ? 'selected' : ''}>{{ $kategoris->Kategori }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Deskripsi:</label>
-                <input type="text" id="edit-Deskripsi" class="swal2-input" value="${deskripsi}">
-            </div>
-        `,
-        confirmButtonText: 'Simpan',
-        showCancelButton: true,
-        cancelButtonText: 'Batal',
-        preConfirm: () => {
-            return {
-                Nama_Barang: document.getElementById('edit-Nama_Barang').value,
-                Kategori_Id: document.getElementById('edit-Kategori').value,  // Pastikan mengirimkan Kategori_Id
-                Deskripsi: document.getElementById('edit-Deskripsi').value
-            };
-        }
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: `/barang/update/${id}`,
-                type: 'PUT',
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    Nama_Barang: result.value.Nama_Barang,
-                    Kategori_Id: result.value.Kategori_Id,  // Kirim Kategori_Id
-                    Deskripsi: result.value.Deskripsi
-                },
-                success: function (response) {
-                    if (response.success) {
-                        Swal.fire('Berhasil!', response.message, 'success')
-                            .then(() => location.reload());
-                    } else {
-                        Swal.fire('Gagal!', response.message || 'Gagal memperbarui barang.', 'error');
-                    }
-                },
-                error: function (xhr) {
-                    let errorMessage = 'Terjadi kesalahan saat memperbarui barang.';
-                    if (xhr.responseJSON && xhr.responseJSON.message) {
-                        errorMessage = xhr.responseJSON.message; // Menampilkan pesan error dari backend
-                    }
-                    Swal.fire('Error!', errorMessage, 'error');
+            Swal.fire({
+                title: 'Edit Barang',
+                html: `
+                    <input type="hidden" id="edit-id" value="${id}">
+                    <div class="form-group">
+                        <label>Nama Barang:</label>
+                        <input type="text" id="edit-Nama_Barang" class="swal2-input" value="${nama}">
+                    </div>
+                    <div class="form-group">
+                        <label>Kategori:</label>
+                        <select id="edit-Kategori" class="swal2-input">
+                            @foreach ($kategori as $kategoris)
+                                <option value="{{ $kategoris->id }}" ${kategoriId == {{ $kategoris->id }} ? 'selected' : ''}>{{ $kategoris->Kategori }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Deskripsi:</label>
+                        <input type="text" id="edit-Deskripsi" class="swal2-input" value="${deskripsi}">
+                    </div>
+                `,
+                confirmButtonText: 'Simpan',
+                showCancelButton: true,
+                cancelButtonText: 'Batal',
+                preConfirm: () => {
+                    return {
+                        Nama_Barang: document.getElementById('edit-Nama_Barang').value,
+                        Kategori_Id: document.getElementById('edit-Kategori').value,  // Pastikan mengirimkan Kategori_Id
+                        Deskripsi: document.getElementById('edit-Deskripsi').value
+                    };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('update.barang', ':id') }}".replace(':id', encodeURIComponent(id)),
+                        type: 'PUT',
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            Nama_Barang: result.value.Nama_Barang,
+                            Kategori_Id: result.value.Kategori_Id,  // Kirim Kategori_Id
+                            Deskripsi: result.value.Deskripsi
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire('Berhasil!', response.message, 'success')
+                                    .then(() => location.reload());
+                            } else {
+                                Swal.fire('Gagal!', response.message || 'Gagal memperbarui barang.', 'error');
+                            }
+                        },
+                        error: function (xhr) {
+                            let errorMessage = 'Terjadi kesalahan saat memperbarui barang.';
+                            if (xhr.responseJSON && xhr.responseJSON.message) {
+                                errorMessage = xhr.responseJSON.message; // Menampilkan pesan error dari backend
+                            }
+                            Swal.fire('Error!', errorMessage, 'error');
+                        }
+                    });
                 }
             });
-        }
-    });
-});
+        });
 
 
         // Hapus Barang

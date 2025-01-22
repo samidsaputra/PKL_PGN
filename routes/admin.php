@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 //CRUD Barang
 Route::get('/admin/daftar-Barang', [addBarangController::class, 'daftarBarang'])->name('daftar.barang');
 Route::post('/admin/create-barang', [addBarangController::class, 'createBarang'])->name('create.barang');
-Route::post('/admin/update-barang/{id}', [addBarangController::class, 'updateBarang'])->name('update.barang');
+Route::put('/admin/update-barang/{id}', [addBarangController::class, 'updateBarang'])->name('update.barang');
 Route::delete('/admin/barang/{id}', [addBarangController::class, 'deleteBarang'])->name('delete.barang');
 
 
