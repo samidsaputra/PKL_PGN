@@ -205,7 +205,7 @@ a.sidebar-link:hover {
           </li>
         </ul>
       </li>
-    @elseif(auth()->user()->role === 'approver')
+    @elseif(auth()->user()->role === 'Approver')
       <li class="sidebar-item">
         <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
            data-bs-target="#approval" aria-expanded="false" aria-controls="approval">
@@ -214,10 +214,10 @@ a.sidebar-link:hover {
         </a>
         <ul id="approval" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
           <li class="sidebar-item">
-            <a href="{{ route('pending.approvals') }}" class="sidebar-link">Pending Approvals</a>
+            <a href="{{ route('approver.approval')}}" class="sidebar-link">Pending Approvals</a>
           </li>
           <li class="sidebar-item">
-            <a href="{{ route('approved.requests') }}" class="sidebar-link">Approved Requests</a>
+            <a href="{{ route('approver.approved')}}" class="sidebar-link">Approved Requests</a>
           </li>
         </ul>
       </li>
@@ -228,7 +228,7 @@ a.sidebar-link:hover {
     <!-- Menu Footer -->
     <div class="sidebar-footer">
       <a href="#" class="sidebar-link">
-        <i class="lni lni-popup"></i>
+        <i class="lni lni-bell-1"></i>
         <span>Notification</span>
       </a>
       <a href="/logout" class="sidebar-link">

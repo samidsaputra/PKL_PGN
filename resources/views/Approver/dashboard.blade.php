@@ -9,23 +9,10 @@
     <link rel="stylesheet" href="{{ asset('css/admin/dashboard.css') }}">
 </head>
 <body >
-    <x-SidebarAdmin></x-SidebarAdmin>
+    <x-sidebar></x-sidebar>
     <main class="dashboard-content">
-        <div class="dashboard-header">Welcome to GasNir</div>
-        <div class="card-holder">
-            <div class="card">
-                Item's
-            </div>
-            <div class="card">
-                Total Order
-            </div>
-            <div class="card">
-                Stock Item
-            </div>
-            <div class="card">
-                ???
-            </div>
-        </div>
+        <div class="dashboard-header">Welcome to the Dashboard</div>
+        <p>Here you can manage your projects, team, and more!</p>
     </main>
 </body>
 </html>

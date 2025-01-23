@@ -13,6 +13,9 @@ Route::post('/admin/create-barang', [addBarangController::class, 'createBarang']
 Route::put('/admin/update-barang/{id}', [addBarangController::class, 'updateBarang'])->name('update.barang');
 Route::delete('/admin/barang/{id}', [addBarangController::class, 'deleteBarang'])->name('delete.barang');
 
+// CRUD Pesanan
+Route::get('/admin/pesanan', [adminController::class, 'pesanan'])->name('daftar.pesanan');
+
 
 //CRUD Satuan Kerja
 Route::get('/admin/satker', [UserReg::class, 'daftarSatker'])->name('daftar.satker');

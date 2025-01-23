@@ -1,13 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Order;
+
+
 
 use Illuminate\Http\Request;
 
 class adminController extends Controller
 {
-    // public function dashboard(){
+    public function pesanan(){
+        $orders = Order::all();
         
-    //     return view('admin.dashboard');
-    // }
+        return view('admin.Pesanan', compact('orders'));
+    }
 }
