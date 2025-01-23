@@ -163,12 +163,12 @@ a.sidebar-link:hover {
             <i class="lni lni-home-2"></i>  
               <span>Dashboard</span>
           </a>
-      </li>
-      <li class="sidebar-item">
-          <a href="#" class="sidebar-link">
+        </li>
+        <li class="sidebar-item">
+            <a href="{{ route('daftar.pesanan')}}" class="sidebar-link">
               <i class="lni lni-agenda"></i>
-              <span>Task</span>
-          </a>
+              <span>Data Pesanan</span>
+            </a>
       </li>
       <li class="sidebar-item">
           <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
@@ -196,9 +196,6 @@ a.sidebar-link:hover {
                   <a href="{{ route('daftar.barang')}}" class="sidebar-link">Data Sovenir</a>
               </li>
               <li class="sidebar-item">
-                  <a href="{{ route('daftar.satker')}}" class="sidebar-link">Data Pesanan</a>
-              </li>
-              <li class="sidebar-item">
                 <a href="{{ route('kategori.index')}}" class="sidebar-link">Data Kategori</a>
             </li>
           </ul>
@@ -212,7 +209,7 @@ a.sidebar-link:hover {
     </ul>
     <div class="sidebar-footer">
       <a href="#" class="sidebar-link">
-          <i class="lni lni-popup"></i>
+        <i class="lni lni-bell-1"></i>
           <span>Notification</span>
       </a>
       <a href="/logout" class="sidebar-link">
