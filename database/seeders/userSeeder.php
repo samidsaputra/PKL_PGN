@@ -12,15 +12,36 @@ class UserSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run()
+    public function run(): void
     {
-        User::create([
-            'id' => 'CSS001', // UUID sebagai primary key
-            'name' => 'Admin',
-            'email' => 'admin@example.com',
-            'password' => Hash::make('shaqi123'), // Password default
-            'role' => 'admin',
-            'satuan_kerja' => 'CSS', // Atur sesuai kebutuhan, bisa null
-        ]);
+        $userData= [
+            [
+                'id' => 'CSS001', // UUID sebagai primary key
+                'name' => 'Admin',
+                'email' => 'admin@example.com',
+                'password' => Hash::make('password'), // Password default
+                'role' => 'admin',
+                'satuan_kerja' => 'CSS', // Atur sesuai kebutuhan, bisa null
+            ],
+            [
+                'id' => 'CSS002', // UUID sebagai primary key
+                'name' => 'Requester',
+                'email' => 'requester@example.com',
+                'password' => Hash::make('password'), // Password default
+                'role' => 'requester',
+                'satuan_kerja' => 'CSS',
+            ],
+            [
+                'id' => 'CSS003', // UUID sebagai primary key
+                'name' => 'Approver',
+                'email' => 'approver@example.com',
+                'password' => Hash::make('password'), // Password default
+                'role' => 'approver',
+                'satuan_kerja' => 'CSS',
+            ],
+        ];
+        foreach($userData as $key => $val){
+            User::create($val);
+        }
     }
 }

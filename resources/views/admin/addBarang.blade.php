@@ -39,7 +39,11 @@
                                         <option value="{{ $kategoris->id }}">{{ $kategoris->Kategori }}</option>
                                     @endforeach
                                 </select>
-                            </div>                            
+                            </div>  
+                            <div class="form-group">
+                                <label for="add-Stok">Stok:</label>
+                                <input type="text" id="add-Stok" name="Stok" required>
+                            </div>                          
                             <div class="form-group">
                                 <label for="add-Deskripsi">Deskripsi:</label>
                                 <input type="text" id="add-Deskripsi" name="Deskripsi" required>
@@ -62,6 +66,7 @@
                                 <th>ID</th>
                                 <th>Nama Barang</th>
                                 <th>Kategori Barang</th>
+                                <th>Stok</th>
                                 <th>Deskripsi</th>
                                 <th>Action</th>
                             </tr>
@@ -72,9 +77,10 @@
                                     <td>{{ $barangs->id }}</td>
                                     <td>{{ $barangs->Nama_Barang }}</td>
                                     <td>{{ $barangs->Kategori }}</td> <!-- Mengakses nama kategori -->
+                                    <td>{{ $barangs->Stok }}</td>
                                     <td>{{ $barangs->Deskripsi }}</td>
                                     <td>
-                                        <button type="button" class="edit-btn" data-id="{{ $barangs->id }}" data-nama="{{ $barangs->Nama_Barang }}" data-kategori="{{ $barangs->Kategori }}" data-deskripsi="{{ $barangs->Deskripsi }}">
+                                        <button type="button" class="edit-btn" data-id="{{ $barangs->id }}" data-nama="{{ $barangs->Nama_Barang }}" data-kategori="{{ $barangs->Kategori }}" data-Stok="{{ $barangs->Stok }}" data-deskripsi="{{ $barangs->Deskripsi }}">
                                             Edit
                                         </button>
                                         <button class="delete-btn" data-id="{{ $barangs->id }}">Delete</button>
@@ -134,6 +140,7 @@
             let id = $(this).data('id');
             let nama = $(this).data('nama');
             let kategoriId = $(this).data('kategori');
+            let stok = $(this).data('stok')
             let deskripsi = $(this).data('deskripsi');
 
             Swal.fire({
@@ -153,6 +160,10 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label>Stok:</label>
+                        <input type="text" id="edit-Stok" class="swal2-input" value="${stok}">
+                    </div>
+                    <div class="form-group">
                         <label>Deskripsi:</label>
                         <input type="text" id="edit-Deskripsi" class="swal2-input" value="${deskripsi}">
                     </div>
@@ -164,6 +175,7 @@
                     return {
                         Nama_Barang: document.getElementById('edit-Nama_Barang').value,
                         Kategori_Id: document.getElementById('edit-Kategori').value,  // Pastikan mengirimkan Kategori_Id
+                        Stok: document.getElementById('edit-Stok').value,
                         Deskripsi: document.getElementById('edit-Deskripsi').value
                     };
                 }
@@ -176,6 +188,7 @@
                             _token: "{{ csrf_token() }}",
                             Nama_Barang: result.value.Nama_Barang,
                             Kategori_Id: result.value.Kategori_Id,  // Kirim Kategori_Id
+                            Stok: result.value.Stok,
                             Deskripsi: result.value.Deskripsi
                         },
                         success: function (response) {

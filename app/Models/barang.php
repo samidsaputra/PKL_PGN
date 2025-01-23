@@ -19,6 +19,7 @@ class Barang extends Model
         'id',
         'Nama_Barang',
         'Kategori_Id',
+        'Stok',
         'Kategori',
         'Deskripsi'
     ];

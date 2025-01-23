@@ -20,7 +20,7 @@
   <div class="cart-modal">
     <div class="cart-header">
       <h2>Cart</h2>
-      <button onclick="toggleCart()" style="border: none; background: none; cursor: pointer; font-size: 20px;">×</button>
+      <button onclick="toggleCart()" style="border: none; background: none; cursor: pointer; font-size: 20px;"></button>
     </div>
     <div class="cart-items">
       <!-- Cart items will be inserted here -->
@@ -67,128 +67,125 @@
   </main>
 
   <script>
-    let cart = [];
+   $(document).ready(function() {
+  let cart = [];
+
+  window.toggleCart = function() {
+    $('.cart-modal').toggleClass('active');
+  }
+
+  window.addToCart = function(itemId, itemName, itemCategory) {
+    // Convert itemId to integer
+    const id = parseInt(itemId);
+    const existingItem = cart.find(item => item.id === id);
     
-    function toggleCart() {
-      document.querySelector('.cart-modal').classList.toggle('active');
+    if (existingItem) {
+      existingItem.jumlah += 1;
+    } else {
+      cart.push({
+        id: id, // Now storing as integer
+        nama: itemName,
+        kategori: itemCategory,
+        jumlah: 1
+      });
     }
+    updateCartBadge();
+    renderCart();
+  }
 
-    function updateCartBadge() {
-      const totalItems = cart.reduce((sum, item) => sum + item.jumlah, 0);
-      document.querySelector('.cart-badge').textContent = totalItems;
-    }
-
-    function addToCart(itemId, itemName, itemCategory) {
-      const existingItem = cart.find(item => item.id === itemId);
-      
-      if (existingItem) {
-        existingItem.jumlah += 1;
-      } else {
-        cart.push({
-          id: itemId,
-          nama: itemName,
-          kategori: itemCategory,
-          jumlah: 1
-        });
+  window.updateQuantity = function(itemId, change) {
+    // Convert itemId to integer
+    const id = parseInt(itemId);
+    const item = cart.find(item => item.id === id);
+    if (item) {
+      item.jumlah = Math.max(0, item.jumlah + change);
+      if (item.jumlah === 0) {
+        cart = cart.filter(i => i.id !== id);
       }
-      
       updateCartBadge();
       renderCart();
     }
+  }
 
-    function updateQuantity(itemId, change) {
-      const item = cart.find(item => item.id === itemId);
-      if (item) {
-        item.jumlah = Math.max(0, item.jumlah + change);
-        if (item.jumlah === 0) {
-          cart = cart.filter(i => i.id !== itemId);
-        }
-        updateCartBadge();
-        renderCart();
-      }
-    }
+  function updateCartBadge() {
+    const totalItems = cart.reduce((sum, item) => sum + item.jumlah, 0);
+    $('.cart-badge').text(totalItems);
+  }
 
-    function renderCart() {
-      const cartContainer = document.querySelector('.cart-items');
-      cartContainer.innerHTML = '';
-      cart.forEach(item => {
-        cartContainer.innerHTML += `
-          <div class="cart-item">
-            <div class="cart-item-details">
-              <h3>${item.nama}</h3>
-              <p>${item.kategori}</p>
-            </div>
-            <div class="quantity-controls">
-              <button class="quantity-btn" onclick="updateQuantity('${item.id}', -1)">-</button>
-              <span>${item.jumlah}</span>
-              <button class="quantity-btn" onclick="updateQuantity('${item.id}', 1)">+</button>
-            </div>
+  function renderCart() {
+    $('.cart-items').empty();
+    cart.forEach(item => {
+      $('.cart-items').append(`
+        <div class="cart-item">
+          <div class="cart-item-details">
+            <h3>${item.nama}</h3>
+            <p>${item.kategori}</p>
           </div>
-        `;
-      });
-      // Add cart items to checkout form
-      const cartItemsContainer = document.getElementById('cart-items-container');
-      cartItemsContainer.innerHTML = '';
-      cart.forEach((item, index) => {
-        cartItemsContainer.innerHTML += `
-          <input type="hidden" name="items[${index}][item]" value="${item.nama}">
-          <input type="hidden" name="items[${index}][kategori]" value="${item.kategori}">
-          <input type="hidden" name="items[${index}][jumlah]" value="${item.jumlah}">
-        `;
-      });
-    }
-    document.getElementById('checkoutForm').addEventListener('submit', async function(e) {
-  e.preventDefault();
-
-  if (cart.length === 0) {
-    alert('Cart is empty!');
-    return;
-  }
-
-  const formData = new FormData(this);
-  const checkoutData = {
-    acara: formData.get('acara'),
-    tanggal_acara: formData.get('tanggal_acara'),
-    tanggal_yang_diharapkan: formData.get('tanggal_yang_diharapkan'),
-    items: cart
-  };
-
-  try {
-    const response = await fetch('{{ route("cart.checkout") }}', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-      },
-      body: JSON.stringify(checkoutData)
+          <div class="quantity-controls">
+            <button type="button" class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+            <span>${item.jumlah}</span>
+            <button type="button" class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+          </div>
+        </div>
+      `);
     });
-
-    const result = await response.json();
-
-    if (response.ok) {
-      // Jika sukses
-      if (result.status === 'success') {
-        alert(result.message);
-        cart = [];
-        updateCartBadge();
-        renderCart();
-        toggleCart();
-        this.reset();
-      } else {
-        // Jika API mengembalikan status error
-        alert(result.message || 'Something went wrong, please try again.');
-      }
-    } else {
-      // Jika respons HTTP error
-      throw new Error(result.message || `HTTP error! Status: ${response.status}`);
-    }
-  } catch (error) {
-    // Menangkap error dan menampilkannya
-    console.error('Error:', error);
-    alert(`${error.message}`);
   }
-});
 
+  $('#checkoutForm').submit(function(e) {
+    e.preventDefault();
+
+    if (cart.length === 0) {
+      alert('Cart is empty!');
+      return;
+    }
+
+    // Ensure all IDs are integers before sending
+    const cartWithIntIds = cart.map(item => ({
+      ...item,
+      id: parseInt(item.id),
+      jumlah: parseInt(item.jumlah)
+    }));
+
+    let checkoutData = {
+      acara: $('input[name="acara"]').val(),
+      tanggal_acara: $('input[name="tanggal_acara"]').val(),
+      tanggal_yang_diharapkan: $('input[name="tanggal_yang_diharapkan"]').val(),
+      items: cartWithIntIds
+    };
+
+    $.ajax({
+      url: '{{ route("cart.checkout") }}',
+      type: 'POST',
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      data: JSON.stringify(checkoutData),
+      dataType: 'json',
+      processData: false,
+      success: function(response) {
+        if (response.status === 'success') {
+          alert(response.message);
+          cart = [];
+          updateCartBadge();
+          renderCart();
+          toggleCart();
+          $('#checkoutForm')[0].reset();
+        } else {
+          alert(response.message || 'Something went wrong, please try again.');
+        }
+      },
+      error: function(xhr) {
+        console.error('Error:', xhr);
+        const errorMessage = xhr.responseJSON?.message || `Error! Status: ${xhr.status}`;
+        console.error('Validation Error:', errorMessage);
+        alert(errorMessage);
+      }
+    });
+  });
+});
   </script>
+  
 </body>
 </html>
