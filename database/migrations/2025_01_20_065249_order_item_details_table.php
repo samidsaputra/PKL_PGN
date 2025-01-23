@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('order_items', function (Blueprint $table) {
             $table->id(); // ID item (primary key)
-            $table->foreignId('noorder') // Relasi ke tabel orders
-                ->constrained('orders', 'noorder') // Menggunakan noorder sebagai foreign key
-                ->onDelete('cascade'); // Hapus item jika order dihapus
+            $table->string('noorder'); // Hapus item jika order dihapus
             $table->string('item'); // Nama item
             $table->integer('jumlah'); // Jumlah item
             $table->timestamps(); // Kolom created_at dan updated_at
+
+            $table->foreign('noorder')->references('noorder')->on('orders')->onDelete('cascade');
         });
     }
 

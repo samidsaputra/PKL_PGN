@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('id')->primary(); // Kolom id sebagai primary key
             $table->string('Nama_Barang'); // Kolom nama_barang
             $table->unsignedBigInteger('Kategori_Id'); // Kolom kategori sebagai foreign key
+            $table->string('Stok');
             $table->string('Kategori');
             $table->string('Deskripsi'); // Kolom deskripsi
             $table->timestamps(); // Kolom created_at dan updated_at
