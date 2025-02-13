@@ -12,6 +12,7 @@ class Order extends Model
 
     public $incrementing = false; // UUID tidak auto-increment
     protected $keyType = 'string'; // UUID adalah string
+    protected $primaryKey = 'noorder'; // Tetapkan noorder sebagai primary key
 
     protected $fillable = [
         'noorder',
@@ -19,12 +20,12 @@ class Order extends Model
         'tanggal_acara',
         'tanggal_yang_diharapkan',
         'status',
-        'penerima'
+        'revision_note',
+        'user_id'  
     ];
 
     protected $attributes = [
         'status' => 'pending', 
-        'penerima' => 'saya',// Default status
     ];
 
     protected static function boot()
@@ -36,5 +37,15 @@ class Order extends Model
                 $model->noorder = (string) Str::uuid();
             }
         });
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function items()
+    {
+        return $this->hasMany(OrderItem::class, 'noorder', 'noorder');
     }
 }
