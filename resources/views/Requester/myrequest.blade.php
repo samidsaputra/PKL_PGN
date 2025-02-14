@@ -1,191 +1,172 @@
+<!-- resources/views/auth/register.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>E-commerce Flow</title>
-  <link rel="stylesheet" href="{{ asset('css/Requester/request.css') }}">
-  <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="{{ asset('css/Requester/myrequest.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
-<body>
-  <x-sidebar></x-sidebar>
-
-  <!-- Cart Icon -->
-  <div class="cart-icon" onclick="toggleCart()">
-    <i class="lni lni-cart-2"></i>
-    <span class="cart-badge">0</span>
-  </div>
-
-  <!-- Cart Modal -->
-  <div class="cart-modal">
-    <div class="cart-header">
-      <h2>Cart</h2>
-      <button onclick="toggleCart()" style="border: none; background: none; cursor: pointer; font-size: 20px;"></button>
+<body >
+    <x-sidebar></x-sidebar>
+    <main>
+        <div class="container">
+            <h1>Order Table</h1>
+            @if(session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nomor Order</th>
+                        <th>Acara</th>
+                        <th>Tanggal Acara</th>
+                        <th>Tanggal Yang Diharapkan</th>
+                        <th>Status</th>
+                        <th>Tanggal Pemesanan</th>
+                        <th>Tanggal Revisi</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php $no = 1; @endphp
+                    @foreach($orders as $order)
+                        @if($order->user_id === auth()->user()->id)
+                        <tr>
+                            <td>{{ $no++ }}</td>
+                            <td>{{ $order->noorder }}</td>
+                            <td>{{ $order->acara }}</td>
+                            <td>{{ $order->tanggal_acara }}</td>
+                            <td>{{ $order->tanggal_yang_diharapkan }}</td>
+                            <td>{{ $order->status }}</td>
+                            <td>{{ $order->created_at }}</td>
+                            <td>{{ $order->updated_at }}</td>
+                            <th>
+                                <button class="btn-open-modal" data-order="{{ $order->noorder }}" data-acara="{{ $order->acara }}" data-tanggal-acara="{{ $order->tanggal_acara }}" data-tanggal-expected="{{ $order->tanggal_yang_diharapkan }}" data-status="{{ $order->status }}">Open</button>
+                            </th>
+                        </tr>
+                        @endif
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <div class="modal" id="orderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>No Order: <span id="modalNoOrder"></span></h2>
+                <button class="btn-close" id="closeModal"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Acara:</strong> <span id="modalAcara"></span></p>
+                <p><strong>Tanggal Pelaksanaan:</strong> <span id="modalTanggalAcara"></span></p>
+                <p><strong>Tanggal Yang Diharapkan:</strong> <span id="modalTanggalYangDiharapkan"></span></p>
+                <p><strong>Status:</strong> <span id="modalStatus"></span></p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Item</th>
+                            <th>Jumlah</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modalItems">
+                        <!-- Item details will be injected dynamically -->
+                    </tbody>
+                </table>
+                <div class="modal-footer" id="modalFooter">
+                    <!-- Edit button will be injected here if status is Revisi -->
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="cart-items">
-      <!-- Cart items will be inserted here -->
-    </div>
-    <div class="cart-footer">
-      <form id="checkoutForm" class="checkout-form" action="{{ route('cart.checkout') }}" method="POST">
-        @csrf
-        <div class="form-group">
-          <label for="acara">Nama Acara:</label>
-          <input type="text" name="acara" value="{{ old('acara')}}" placeholder="Masukkan Nama Acara" required>
-        </div>
-        <div class="form-group">
-          <label for="tanggal_acara">Tanggal Acara:</label>
-          <input type="date" name="tanggal_acara" value="{{ old('tanggal_acara')}}" required>
-        </div>
-        <div class="form-group">
-          <label for="tanggal_yang_diharapkan">Tanggal yang Diharapkan:</label>
-          <input type="date" name="tanggal_yang_diharapkan" value="{{ old('tanggal_yang_diharapkan')}}" required>
-        </div>
-        <div id="cart-items-container">
-          <!-- Items dari cart akan dimasukkan di sini -->
-        </div>
-        <button type="submit" class="checkout-btn" value="Order">Order</button>
-      </form>
-    </div>
-  </div>
+    <!-- Modal -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const modal = document.getElementById('orderModal');
+        const modalNoOrder = document.getElementById('modalNoOrder');
+        const modalAcara = document.getElementById('modalAcara');
+        const modalTanggalAcara = document.getElementById('modalTanggalAcara');
+        const modalTanggalYangDiharapkan = document.getElementById('modalTanggalYangDiharapkan');
+        const modalItems = document.getElementById('modalItems');
+        const modalClose = document.getElementById('closeModal');
+        const modalStatus = document.getElementById('modalStatus');
+        const modalFooter = document.getElementById('modalFooter');
 
-  <main>
-    <div class="container">
-      <h2>Item</h2>
-      <div class="grid">
-        @foreach($items as $item)
-        <div class="product-card" onclick="addToCart('{{ $item->id }}', '{{ $item->Nama_Barang }}', '{{ $item->Kategori }}')">
-          <img src="https://via.placeholder.com/150" alt="{{ $item->Nama_Barang }}">
-          <div class="product-details">
-            <h3>{{ $item->Nama_Barang }}</h3>
-            <p>{{ $item->Kategori }}</p>
-            <p>{{ $item->Deskripsi }}</p>
-          </div>
-        </div>
-        @endforeach
-      </div>
-    </div>
-  </main>
+        // Fungsi untuk mengambil data order dari server
+        async function fetchOrderDetails(noorder) {
+            try {
+                const response = await fetch(`/req/myrequest/detail/${noorder}`);
+                if (!response.ok) {
+                    throw new Error('Order tidak ditemukan');
+                }
+                const data = await response.json();
 
-  <script>
-   $(document).ready(function() {
-  let cart = [];
+                // Set data di dalam modal
+                modalNoOrder.textContent = data.noorder;
+                modalAcara.textContent = data.acara;
+                modalTanggalAcara.textContent = data.tanggal_acara;
+                modalTanggalYangDiharapkan.textContent = data.tanggal_yang_diharapkan;
+                modalStatus.textContent = data.status;
 
-  window.toggleCart = function() {
-    $('.cart-modal').toggleClass('active');
-  }
+                // Kosongkan tabel item sebelum menambahkan data baru
+                modalItems.innerHTML = '';
 
-  window.addToCart = function(itemId, itemName, itemCategory) {
-    // Convert itemId to integer
-    const id = parseInt(itemId);
-    const existingItem = cart.find(item => item.id === id);
-    
-    if (existingItem) {
-      existingItem.jumlah += 1;
-    } else {
-      cart.push({
-        id: id, // Now storing as integer
-        nama: itemName,
-        kategori: itemCategory,
-        jumlah: 1
-      });
-    }
-    updateCartBadge();
-    renderCart();
-  }
+                // Tambahkan data item ke dalam tabel
+                data.items.forEach((item, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${item.name}</td>
+                        <td>${item.quantity}</td>
+                    `;
+                    modalItems.appendChild(row);
+                });
 
-  window.updateQuantity = function(itemId, change) {
-    // Convert itemId to integer
-    const id = parseInt(itemId);
-    const item = cart.find(item => item.id === id);
-    if (item) {
-      item.jumlah = Math.max(0, item.jumlah + change);
-      if (item.jumlah === 0) {
-        cart = cart.filter(i => i.id !== id);
-      }
-      updateCartBadge();
-      renderCart();
-    }
-  }
+                // Tampilkan modal
+                modal.style.display = 'flex';
 
-  function updateCartBadge() {
-    const totalItems = cart.reduce((sum, item) => sum + item.jumlah, 0);
-    $('.cart-badge').text(totalItems);
-  }
-
-  function renderCart() {
-    $('.cart-items').empty();
-    cart.forEach(item => {
-      $('.cart-items').append(`
-        <div class="cart-item">
-          <div class="cart-item-details">
-            <h3>${item.nama}</h3>
-            <p>${item.kategori}</p>
-          </div>
-          <div class="quantity-controls">
-            <button type="button" class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
-            <span>${item.jumlah}</span>
-            <button type="button" class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
-          </div>
-        </div>
-      `);
-    });
-  }
-
-  $('#checkoutForm').submit(function(e) {
-    e.preventDefault();
-
-    if (cart.length === 0) {
-      alert('Cart is empty!');
-      return;
-    }
-
-    // Ensure all IDs are integers before sending
-    const cartWithIntIds = cart.map(item => ({
-      ...item,
-      id: parseInt(item.id),
-      jumlah: parseInt(item.jumlah)
-    }));
-
-    let checkoutData = {
-      acara: $('input[name="acara"]').val(),
-      tanggal_acara: $('input[name="tanggal_acara"]').val(),
-      tanggal_yang_diharapkan: $('input[name="tanggal_yang_diharapkan"]').val(),
-      items: cartWithIntIds
-    };
-
-    $.ajax({
-      url: '{{ route("cart.checkout") }}',
-      type: 'POST',
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      data: JSON.stringify(checkoutData),
-      dataType: 'json',
-      processData: false,
-      success: function(response) {
-        if (response.status === 'success') {
-          alert(response.message);
-          cart = [];
-          updateCartBadge();
-          renderCart();
-          toggleCart();
-          $('#checkoutForm')[0].reset();
-        } else {
-          alert(response.message || 'Something went wrong, please try again.');
+                // Handle edit button visibility
+                modalFooter.innerHTML = '';
+                if (data.status === 'Revisi') {
+                    const editButton = document.createElement('a');
+                    const noorder = modalNoOrder.textContent;
+                    editButton.href = `/req/myrequest/${noorder}/edit`;
+                    editButton.className = 'btn btn-warning';
+                    editButton.textContent = 'Edit Order';
+                    modalFooter.appendChild(editButton);
+                }
+            } catch (error) {
+                alert(error.message);
+            }
         }
-      },
-      error: function(xhr) {
-        console.error('Error:', xhr);
-        const errorMessage = xhr.responseJSON?.message || `Error! Status: ${xhr.status}`;
-        console.error('Validation Error:', errorMessage);
-        alert(errorMessage);
-      }
+
+        // Handle Open Modal
+        document.querySelectorAll('.btn-open-modal').forEach(button => {
+            button.addEventListener('click', () => {
+                const noorder = button.getAttribute('data-order');
+                fetchOrderDetails(noorder);
+            });
+        });
+
+        // Handle Close Modal
+        modalClose.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        // Close Modal on Background Click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
     });
-  });
-});
-  </script>
-  
+
+</script>
+
 </body>
 </html>
+

@@ -5,19 +5,177 @@ body {
   font-family: Arial, sans-serif;
   display: flex;
   height: 100vh;
+  background-color: var(--background-color);
 }
 
-/* main */
-main{
-display:grid;
-justify-content: left;
-margin-top: 20px;
-width: 100%;
+main {
+  padding: 2rem;
+  padding-left: 4.6rem;
+  flex-grow: 1;
 }
+
+/* Image Gallery Styles */
+.image-gallery-container {
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 15px 0;
+}
+
+.image-gallery {
+  display: flex;
+  gap: 20px;
+  padding: 0 20px;
+  height: calc(100% - 30px);
+}
+
+.gallery-item {
+  min-width: 200px;
+  height: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.gallery-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 65%;
+  object-fit: cover;
+}
+
+.item-details {
+  padding: 12px;
+}
+
+.item-details h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.item-details p {
+  margin: 5px 0 0;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* Custom Scrollbar */
+.image-gallery-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.image-gallery-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.image-gallery-container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.image-gallery-container::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Keep existing styles from your CSS
+.dashboard {
+  min-height: 100vh;
+  margin-left: 250px;
+} */
 
 .dashboard-header {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    margin-left: 200px;
+  padding: 20px;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: white;
+}
+
+.dashboard-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+  color: #111827;
+}
+
+.dashboard-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 5px 0 0 0;
+}
+
+.dashboard-content {
+  padding: 24px;
+}
+
+.dashboard-card {
+  background-color: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.large-card {
+  width: 100%;
+  height: 256px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 192px;
+  padding: 20px;
+}
+
+.card-label {
+  color: #6b7280;
+  font-size: 16px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard {
+      margin-left: 0;
+  }
+
+  .dashboard-grid {
+      grid-template-columns: 1fr;
+  }
+  
+  .large-card {
+      height: 192px;
+  }
+  
+  .card-content {
+      min-height: 128px;
+  }
+  
+  .gallery-item {
+      min-width: 160px;
+  }
 }

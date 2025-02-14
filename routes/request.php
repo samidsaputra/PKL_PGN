@@ -12,3 +12,6 @@ Route::post('/cart/checkout', [requestController::class, 'checkout'])->name('car
 
 /** MyRequest */
 Route::get('/req/myrequest',[requestController::class, 'history'])->name('request.history');
+Route::get('/req/myrequest/detail/{noorder}',[requestController::class, 'show'])->name('request.show');
+Route::get('/req/myrequest/{noorder}/edit', [requestController::class, 'edit'])->name('requester.orders.edit');
+Route::post('/req/myrequest/{noorder}/update-order', [requestController::class, 'update'])->name('requester.orders.update');

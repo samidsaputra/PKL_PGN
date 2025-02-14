@@ -19,7 +19,12 @@ return new class extends Migration
             $table->date('tanggal_acara'); // Tanggal acara
             $table->date('tanggal_yang_diharapkan'); // Tanggal yang diharapkan
             $table->string('status'); // Status order
-            $table->string('penerima'); // Nama penerima
+            $table->text('revision_note')->nullable(); // Catatan revisi
+            $table->uuid('user_id'); // Foreign key ke tabel users
+            $table->foreign('user_id')
+                  ->references('id')
+                  ->on('users')
+                  ->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -34,4 +39,3 @@ return new class extends Migration
         Schema::dropIfExists('orders');
     }
 };
-
