@@ -13,7 +13,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('barang', function (Blueprint $table) {
-            $table->string('id')->primary(); // Kolom id sebagai primary key
+            $table->id(); // Kolom id sebagai primary key
             $table->string('Nama_Barang'); // Kolom nama_barang
             $table->unsignedBigInteger('Kategori_Id'); // Kolom kategori sebagai foreign key
             $table->string('Stok');

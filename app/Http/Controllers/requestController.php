@@ -60,6 +60,7 @@ class RequestController extends Controller
                 'tanggal_yang_diharapkan' => 'required|date',
                 'items' => 'required|array',
                 'items.*.nama' => 'required|string',
+                'items.*.id' => 'required|string',
                 'items.*.jumlah' => 'required|integer|min:1',
             ])->validate();
 

@@ -40,3 +40,8 @@ Route::get('/admin/users/{user}/edit', [UserReg::class, 'edit'])->name('users.ed
 Route::put('/admin/users/{user}', [UserReg::class, 'update'])->name('users.update');
 Route::delete('/admin/users/{user}', [UserReg::class, 'destroy'])->name('users.destroy');
 Route::put('/admin/users/{user}/reset-password', [UserReg::class, 'resetToDefaultPassword'])->name('users.resetDefaultPassword');
+
+use App\Http\Controllers\DashboardController;
+
+Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+
