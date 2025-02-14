@@ -30,7 +30,7 @@ class RequestController extends Controller
                 'tanggal_acara' => 'required|date',
                 'tanggal_yang_diharapkan' => 'required|date',
                 'items' => 'required|array',
-                'items.*.id' => 'required|string|exists:barang,id',
+                'items.*.id' => 'required|string',
                 'items.*.jumlah' => 'required|integer|min:1',
             ])->validate();
 
