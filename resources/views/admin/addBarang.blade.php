@@ -22,12 +22,8 @@
                     <div class="modal-content">
                         <span class="close-btn" id="closeAddModal">&times;</span>
                         <h3>Tambah Barang</h3>
-                        <form id="add-form" method="POST" action="{{ route('create.barang') }}">
+                        <form id="add-form" method="POST" action="{{ route('create.barang') }}" enctype="multipart/form-data">
                             @csrf
-                            <div class="form-group">
-                                <label for="add-id">ID:</label>
-                                <input type="text" id="add-id" name="id" required>
-                            </div>
                             <div class="form-group">
                                 <label for="add-Nama_Barang">Nama Barang:</label>
                                 <input type="text" id="add-Nama_Barang" name="Nama_Barang" required>
@@ -47,6 +43,10 @@
                             <div class="form-group">
                                 <label for="add-Deskripsi">Deskripsi:</label>
                                 <input type="text" id="add-Deskripsi" name="Deskripsi" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="add-Gambar">Gambar Barang:</label>
+                                <input type="file" id="add-Gambar" name="Gambar" accept="image/*" required>
                             </div>
                             <button type="submit" class="submit-btn">Tambah Barang</button>
                         </form>
@@ -68,6 +68,7 @@
                                 <th>Kategori Barang</th>
                                 <th>Stok</th>
                                 <th>Deskripsi</th>
+                                <th>Gambar</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -79,6 +80,13 @@
                                     <td>{{ $barangs->Kategori }}</td> <!-- Mengakses nama kategori -->
                                     <td>{{ $barangs->Stok }}</td>
                                     <td>{{ $barangs->Deskripsi }}</td>
+                                    <td>
+                                        @if($barangs->Gambar)
+                                            <img src="{{ url('storage/'.$barangs->Gambar) }}" alt="Gambar Barang" style="width: 100px; height: auto;">
+                                        @else
+                                            Tidak ada gambar
+                                        @endif
+                                    </td>
                                     <td>
                                         <button type="button" class="edit-btn" data-id="{{ $barangs->id }}" data-nama="{{ $barangs->Nama_Barang }}" data-kategori="{{ $barangs->Kategori }}" data-Stok="{{ $barangs->Stok }}" data-deskripsi="{{ $barangs->Deskripsi }}">
                                             Edit
@@ -113,11 +121,14 @@
         // Tambah Barang
         $('#add-form').on('submit', function (e) {
             e.preventDefault();
-            let formData = $(this).serialize();
+
+            let formData = new FormData(this); // Gunakan FormData untuk mengirim file
             $.ajax({
                 url: "{{ route('create.barang') }}",
                 type: "POST",
                 data: formData,
+                processData: false,  // Jangan memproses data secara otomatis
+                contentType: false,  // Jangan atur Content-Type secara otomatis
                 success: function (response) {
                     if (response.success) {
                         Swal.fire('Berhasil!', response.message, 'success')
@@ -129,12 +140,11 @@
                 error: function (xhr) {
                     let errorMessage = 'Terjadi kesalahan saat menambahkan barang.';
                     if (xhr.responseJSON && xhr.responseJSON.message) {
-                        errorMessage = xhr.responseJSON.message; // Menampilkan pesan error dari backend
+                        errorMessage = xhr.responseJSON.message;
                     }
                     Swal.fire('Error!', errorMessage, 'error');
                 }
             });
-
         });
         $(document).on('click', '.edit-btn', function () {
             let id = $(this).data('id');

@@ -36,7 +36,7 @@
           <label for="tanggal_acara">Tanggal Acara:</label>
           <input type="date" name="tanggal_acara" id="tanggal_acara" required>
         </div>
-        <div class="form-group">
+        <div class="form-group">  
           <label for="tanggal_yang_diharapkan">Tanggal yang Diharapkan:</label>
           <input type="date" name="tanggal_yang_diharapkan" id="tanggal_yang_diharapkan" required>
         </div>
@@ -53,14 +53,14 @@
       <h2>Item</h2>
       <div class="grid">
         @foreach($items as $item)
-        <div class="product-card" onclick="addToCart('{{ $item->id }}', '{{ $item->Nama_Barang }}', '{{ $item->Kategori }}')">
-          <img src="https://via.placeholder.com/150" alt="{{ $item->Nama_Barang }}">
-          <div class="product-details">
-            <h3>{{ $item->Nama_Barang }}</h3>
-            <p>{{ $item->Kategori }}</p>
-            <p>{{ $item->Deskripsi }}</p>
-          </div>
-        </div>
+            <div class="product-card" onclick="addToCart('{{ $item->id }}', '{{ $item->Nama_Barang }}', '{{ $item->Kategori }}')">
+                <img src="{{ url('storage/'.$item->Gambar) }}">
+                <div class="product-details">
+                    <h3>{{ $item->Nama_Barang }}</h3>
+                    <p>{{ $item->Kategori }}</p>
+                    <p>{{ $item->Deskripsi }}</p>
+                </div>
+            </div>
         @endforeach
       </div>
     </div>

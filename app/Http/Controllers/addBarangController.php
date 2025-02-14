@@ -20,24 +20,30 @@ class addBarangController extends Controller
     {  
         // Validasi input
         $validated = $request->validate([  
-            'id' => 'required|string|unique:barang,id',
             'Nama_Barang' => 'required|string|max:255',  
             'Kategori_Id' => 'required|exists:kategori,id',  // Validasi berdasarkan ID kategori
-            'Stok'=> 'required|string',
-            'Deskripsi' => 'required|string|max:255',  
-        ]);  
+            'Stok'=> 'required|string|min:0',
+            'Deskripsi' => 'required|string|max:255', 
+            'Gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif'
+        ]);
+        
+        if ($request->hasFile('Gambar')) {
+            $gambarPath = $request->file('Gambar')->store('barang', 'public');  
+        } else {
+            $gambarPath = null;
+        }
 
         // Ambil nama kategori berdasarkan ID yang dipilih
         $kategori = Kategori::find($validated['Kategori_Id']); // Ambil kategori berdasarkan ID
 
         // Menambahkan barang baru ke dalam database
         $barang = Barang::create([  
-            'id' => $validated['id'],
             'Nama_Barang' => $validated['Nama_Barang'],  
             'Kategori_Id' => $validated['Kategori_Id'],  // Simpan ID kategori
             'Kategori' => $kategori->Kategori,  // Simpan nama kategori dari tabel kategori
             'Stok'=> $validated['Stok'],
-            'Deskripsi' => $validated['Deskripsi'],  
+            'Deskripsi' => $validated['Deskripsi'],
+            'Gambar' => $gambarPath
         ]);  
         
         return response()->json([  

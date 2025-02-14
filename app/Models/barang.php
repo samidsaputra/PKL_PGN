@@ -12,7 +12,7 @@ class Barang extends Model
     protected $table = 'barang'; // Nama tabel di database
 
     protected $primaryKey = 'id'; // Tentukan kolom id sebagai primary key
-    public $incrementing = false; // Nonaktifkan auto-increment
+    public $incrementing = true; // Nonaktifkan auto-increment
     protected $keyType = 'string'; // Tentukan tipe data primary key sebagai string
 
     protected $fillable = [
@@ -21,7 +21,8 @@ class Barang extends Model
         'Kategori_Id',
         'Stok',
         'Kategori',
-        'Deskripsi'
+        'Deskripsi',
+        'Gambar'
     ];
     // Relasi dengan kategori
     public function kategori()
