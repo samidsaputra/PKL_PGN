@@ -24,7 +24,7 @@
         <div class="form-section">
             <h2>Hello, Welcome Back</h2>
         
-            <form action ="" method="POST">
+            <form method="POST" action="{{ route('login.post') }}">
                 @csrf
                 <input type="email" name="email" value="{{ old('email') }}" placeholder="Enter Email" required autofocus>
                 <input type="password" name="password" placeholder="Enter Password" required>

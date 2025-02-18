@@ -46,7 +46,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="add-Gambar">Gambar Barang:</label>
-                                <input type="file" id="add-Gambar" name="Gambar" accept="image/*" required>
+                                <input type="file" id="add-Gambar" name="Gambar" accept="image/*">
                             </div>
                             <button type="submit" class="submit-btn">Tambah Barang</button>
                         </form>

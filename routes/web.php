@@ -3,13 +3,20 @@
 use App\Http\Controllers\login;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [login::class, 'index'])->name('login');
-Route::post('/', [login::class, 'login']);
-Route::get('/login', [login::class, 'index'])->name('login');
-Route::post('/login', [login::class, 'login']);
-Route::get('/logout', [login::class, 'logout']);
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LoginController;
 
-Route::get('/dashboard', [login::class, 'dashboard'])->name('dashboard');
+// Login routes
+Route::get('/', [LoginController::class, 'index'])->name('login');
+Route::post('/', [LoginController::class, 'index']);
+Route::get('/login', [LoginController::class, 'index'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login.post'); // Tambahkan route POST untuk login
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// Dashboard routes (protected by auth middleware)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
 
 // rute role admin
 require base_path('routes/admin.php');
