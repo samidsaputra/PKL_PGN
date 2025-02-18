@@ -41,7 +41,7 @@ Route::put('/admin/users/{user}', [UserReg::class, 'update'])->name('users.updat
 Route::delete('/admin/users/{user}', [UserReg::class, 'destroy'])->name('users.destroy');
 Route::put('/admin/users/{user}/reset-password', [UserReg::class, 'resetToDefaultPassword'])->name('users.resetDefaultPassword');
 
-use App\Http\Controllers\DashboardController;
+// use App\Http\Controllers\DashboardController;
 
-Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+// Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboardadmin');
 

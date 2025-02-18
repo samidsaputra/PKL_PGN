@@ -5,186 +5,205 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Admin</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/css/dashboard.css">
 </head>
 <body>
-    <x-SidebarAdmin></x-SidebarAdmin>
-    
-    <main class="dashboard">
-        <!-- Header -->
-        <div class="dashboard-header">
-            <h1 class="dashboard-title">Welcome To GasNlr</h1>
-            <p class="dashboard-subtitle">We Serve the Sovenier</p>
-        </div>
-
-        <!-- Main Content -->
-        <div class="dashboard-content">
-            <!-- Image Gallery Card -->
-            <div class="dashboard-card large-card">
-                <div class="image-gallery-container">
-                    <div class="image-gallery">
-                        <!-- Dummy items -->
-                        <div class="gallery-item">
-                            <img src="https://via.placeholder.com/200x150" alt="Souvenir 1">
-                            <div class="item-details">
-                                <h3>Gantungan Kunci</h3>
-                                <p>Rp 25.000</p>
-                            </div>
-                        </div>
-                        <div class="gallery-item">
-                            <img src="https://via.placeholder.com/200x150" alt="Souvenir 2">
-                            <div class="item-details">
-                                <h3>Kaos Custom</h3>
-                                <p>Rp 85.000</p>
-                            </div>
-                        </div>
-                        <div class="gallery-item">
-                            <img src="https://via.placeholder.com/200x150" alt="Souvenir 3">
-                            <div class="item-details">
-                                <h3>Mug Custom</h3>
-                                <p>Rp 35.000</p>
-                            </div>
-                        </div>
-                        <div class="gallery-item">
-                            <img src="https://via.placeholder.com/200x150" alt="Souvenir 4">
-                            <div class="item-details">
-                                <h3>Topi Custom</h3>
-                                <p>Rp 45.000</p>
-                            </div>
-                        </div>
-                        <div class="gallery-item">
-                            <img src="https://via.placeholder.com/200x150" alt="Souvenir 5">
-                            <div class="item-details">
-                                <h3>Pin Badge</h3>
-                                <p>Rp 15.000</p>
-                            </div>
-                        </div>
-                        <div class="gallery-item">
-                            <img src="https://via.placeholder.com/200x150" alt="Souvenir 6">
-                            <div class="item-details">
-                                <h3>Sticker Pack</h3>
-                                <p>Rp 10.000</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Two Column Grid -->
-            <div class="dashboard-grid">
-                <!-- Left Card -->
-                <div class="dashboard-card">
-                    <div class="card-content">
-                        <span class="card-label">Total Order</span>
-                    </div>
-                </div>
-
-                <!-- Right Card -->
-                <div class="dashboard-card">
-                    <div class="card-content">
-                        <span class="card-label">Item's Stock</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-=======
     <div class="wrapper">
         <x-SidebarAdmin />
         <main class="main-content">
             <div class="container">
                 <h2>Dashboard</h2>
-
-                <!-- Grafik Top 5 Barang yang Diminta -->
-                <div class="card">
-                    <h3>Top 5 Barang yang Paling Banyak Diminta</h3>
-                    <canvas id="topBarangChart"></canvas>
+                
+                <!-- Expanded Summary Cards -->
+                <div class="summary-cards">
+                    <div class="dashboard-card summary">
+                        <h3>Total Items</h3>
+                        <div class="count">{{ $totalItems }}</div>
+                    </div>
+                    <div class="dashboard-card summary">
+                        <h3>Total Orders</h3>
+                        <div class="count">{{ $totalOrders }}</div>
+                    </div>
+                    <div class="dashboard-card summary">
+                        <h3>Pending Orders</h3>
+                        <div class="count">{{ $pendingOrders }}</div>
+                    </div>
+                    <div class="dashboard-card summary">
+                        <h3>This Month Orders</h3>
+                        <div class="count">{{ $monthlyOrders }}</div>
+                    </div>
                 </div>
 
-                <!-- Grafik Top 5 Divisi yang Meminta Barang -->
-                <div class="card">
-                    <h3>Top 5 Divisi yang Paling Banyak Meminta Barang</h3>
-                    <canvas id="topDivisiChart"></canvas>
+                <!-- Two Column Layout -->
+                <div class="dashboard-grid">
+                    <!-- Left Column -->
+                    <div class="dashboard-column">
+                        <div class="dashboard-card">
+                            <h3>Top 5 Most Ordered Items</h3>
+                            <canvas id="topItemsChart"></canvas>
+                        </div>
+
+                        <div class="dashboard-card">
+                            <h3>Top 5 Divisions by Order Frequency</h3>
+                            <canvas id="topDivisionsChart"></canvas>
+                        </div>
+
+                        <!-- New Monthly Trend Chart -->
+                        <div class="dashboard-card">
+                            <h3>Monthly Orders Trend</h3>
+                            <canvas id="monthlyTrendChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="dashboard-column">
+                        <!-- Low Stock Alert -->
+                        @if($lowStockItems->count() > 0)
+                        <div class="dashboard-card low-stock">
+                            <h3>Low Stock Alert</h3>
+                            <div class="table-responsive">
+                                <table class="stock-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Item Name</th>
+                                            <th>Current Stock</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($lowStockItems as $item)
+                                        <tr>
+                                            <td>{{ $item->name }}</td>
+                                            <td>{{ $item->stok }}</td>
+                                            <td>
+                                                <span class="status-badge {{ $item->stok <= 20 ? 'critical' : 'warning' }}">
+                                                    {{ $item->stok <= 20 ? 'Critical' : 'Low' }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        @endif
+
+                        <!-- New Recent Orders Section -->
+                        <div class="dashboard-card">
+                            <h3>Recent Orders</h3>
+                            <div class="table-responsive">
+                                <table class="stock-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Division</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($recentOrders as $order)
+                                        <tr>
+                                            <td>#{{ $order->noorder }}</td>
+                                            <td>{{ $order->user->satuan_kerja }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($order->created_at)->format('d M Y') }}</td>
+                                            <td>
+                                                <span class="status-badge {{ strtolower($order->status) }}">
+                                                    {{ $order->status }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <!-- Tabel Stok Barang -->
-                {{-- <div class="card">
-                    <h3>Stok Barang</h3>
-                    <table border="1" cellspacing="0" cellpadding="10">
-                        <thead>
-                            <tr>
-                                <th>Nama Barang</th>
-                                <th>Stok</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($stokBarang as $barang)
-                                <tr>
-                                    <td>{{ $barang->Nama_Barang }}</td>
-                                    <td>{{ $barang->Stok }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div> --}}
-
             </div>
         </main>
     </div>
 
     <script>
-        // Data untuk Grafik Top Barang
-        var topBarangLabels = {!! json_encode($topBarang->pluck('barang.Nama_Barang')) !!};
-        var topBarangData = {!! json_encode($topBarang->pluck('jumlah_pesanan')) !!};
-
-        var ctxBarang = document.getElementById('topBarangChart').getContext('2d');
-        new Chart(ctxBarang, {
-            type: 'bar',
-            data: {
-                labels: topBarangLabels,
-                datasets: [{
-                    label: 'Jumlah Diminta',
-                    data: topBarangData,
-                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
+        // Chart for Top 5 Items
+        const itemsChart = new Chart(
+            document.getElementById('topItemsChart'),
+            {
+                type: 'bar',
+                data: {
+                    labels: {!! json_encode($topItems->pluck('item')) !!},
+                    datasets: [{
+                        label: 'Total Orders',
+                        data: {!! json_encode($topItems->pluck('total_ordered')) !!},
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
             }
-        });
+        );
 
-        // Data untuk Grafik Top Divisi
-        var topDivisiLabels = {!! json_encode($topDivisi->pluck('divisi.nama')) !!};
-        var topDivisiData = {!! json_encode($topDivisi->pluck('jumlah_pesanan')) !!};
-
-        var ctxDivisi = document.getElementById('topDivisiChart').getContext('2d');
-        new Chart(ctxDivisi, {
-            type: 'bar',
-            data: {
-                labels: topDivisiLabels,
-                datasets: [{
-                    label: 'Jumlah Permintaan',
-                    data: topDivisiData,
-                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
+        // Chart for Top 5 Divisions
+        const divisionsChart = new Chart(
+            document.getElementById('topDivisionsChart'),
+            {
+                type: 'pie',
+                data: {
+                    labels: {!! json_encode($topDivisions->pluck('satuan_kerja')) !!},
+                    datasets: [{
+                        data: {!! json_encode($topDivisions->pluck('total_orders')) !!},
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.5)',
+                            'rgba(54, 162, 235, 0.5)',
+                            'rgba(255, 206, 86, 0.5)',
+                            'rgba(75, 192, 192, 0.5)',
+                            'rgba(153, 102, 255, 0.5)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        }
                     }
                 }
             }
-        });
+        );
+
+        // Monthly Trend Chart
+        const monthlyTrendChart = new Chart(
+            document.getElementById('monthlyTrendChart'),
+            {
+                type: 'line',
+                data: {
+                    labels: {!! json_encode($monthlyTrend->pluck('month')) !!},
+                    datasets: [{
+                        label: 'Monthly Orders',
+                        data: {!! json_encode($monthlyTrend->pluck('total')) !!},
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            }
+        );
     </script>
 </body>
 </html>

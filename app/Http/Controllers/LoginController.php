@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class login extends Controller
+class LoginController extends Controller
 {
     public function index()
     {
@@ -34,23 +34,6 @@ class login extends Controller
         return redirect('/')
             ->withErrors('Email atau password salah')
             ->withInput();
-    }
-
-    public function dashboard()
-    {
-        $role = session('role');
-
-        switch ($role) {
-            case 'Requester':
-                return view('Requester.dashboard');
-            case 'Approver':
-                return view('Approver.dashboard');
-            case 'admin':
-                return view('admin.dashboard');
-            default:
-                Auth::logout();
-                return redirect('/')->withErrors('Role tidak dikenali');
-        }
     }
 
     public function logout()
