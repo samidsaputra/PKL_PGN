@@ -14,64 +14,15 @@ body {
     width: 100%;
 }
 
-/* Side Navbar */
-.side-navbar {
-    width: 250px;
-    background-color: #32599c;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 20px;
-    box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
-    position: fixed; /* Agar sidebar tetap di sisi kiri */
-    top: 0;
-    left: 0;
-    height: 100%;
-    z-index: 10; /* Pastikan sidebar di atas konten utama */
-}
-
-.side-navbar .logo img {
-    width: 40px;
-    height: 40px;
-    margin-bottom: 20px;
-}
-
-.side-navbar .menu {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.side-navbar .menu-item {
-    color: #d1d5db;
-    text-decoration: none;
-    padding: 10px 15px;
-    border-radius: 4px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.side-navbar .menu-item:hover,
-.side-navbar .menu-item.active {
-    background-color: #85C226;
-    color: white;
-}
-
-.side-navbar .actions {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
-}
-
 /* Konten Utama */
 .main-content {
-    margin-left: 250px; /* Berikan margin untuk menghindari overlap dengan sidebar */
-    padding: 20px;
-    width: calc(100% - 250px);
-    box-sizing: border-box;
-    background-color: #f9f9f9;
+    padding: 2rem;
+    padding-left: 3.5rem;
+    padding-right: 0rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
 }
 
 /* Container */

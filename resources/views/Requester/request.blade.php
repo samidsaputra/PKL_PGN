@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
   <link rel="stylesheet" href="{{ asset('css/Requester/request.css') }}">
   <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
+
 <body>
   <x-sidebar></x-sidebar>
 
@@ -36,7 +38,7 @@
           <label for="tanggal_acara">Tanggal Acara:</label>
           <input type="date" name="tanggal_acara" id="tanggal_acara" required>
         </div>
-        <div class="form-group">  
+        <div class="form-group">
           <label for="tanggal_yang_diharapkan">Tanggal yang Diharapkan:</label>
           <input type="date" name="tanggal_yang_diharapkan" id="tanggal_yang_diharapkan" required>
         </div>
@@ -53,14 +55,14 @@
       <h2>Item</h2>
       <div class="grid">
         @foreach($items as $item)
-            <div class="product-card" onclick="addToCart('{{ $item->id }}', '{{ $item->Nama_Barang }}', '{{ $item->Kategori }}')">
-                <img src="{{ url('storage/'.$item->Gambar) }}">
-                <div class="product-details">
-                    <h3>{{ $item->Nama_Barang }}</h3>
-                    <p>{{ $item->Kategori }}</p>
-                    <p>{{ $item->Deskripsi }}</p>
-                </div>
-            </div>
+        <div class="product-card" onclick="addToCart('{{ $item->id }}', '{{ $item->Nama_Barang }}', '{{ $item->Kategori }}')">
+          <img src="{{ url('storage/'.$item->Gambar) }}">
+          <div class="product-details">
+            <h3>{{ $item->Nama_Barang }}</h3>
+            <p>{{ $item->Kategori }}</p>
+            <p>Stock: {{ $item->Stok }}</p>
+          </div>
+        </div>
         @endforeach
       </div>
     </div>
@@ -68,7 +70,7 @@
 
   <script>
     let cart = [];
-    
+
     function toggleCart() {
       document.querySelector('.cart-modal').classList.toggle('active');
     }
@@ -78,20 +80,30 @@
       document.querySelector('.cart-badge').textContent = totalItems;
     }
 
-    function addToCart(itemId, itemName, itemCategory) {
+    function addToCart(itemId, itemName, itemCategory, stock) {
       const existingItem = cart.find(item => item.id === itemId);
-      
+
       if (existingItem) {
+        // Check if adding one more would exceed stock
+        if (existingItem.jumlah + 1 > stock) {
+          alert(`Sorry, only ${stock} items available in stock!`);
+          return;
+        }
         existingItem.jumlah += 1;
       } else {
+        if (stock < 1) {
+          alert('Sorry, this item is out of stock!');
+          return;
+        }
         cart.push({
           id: itemId,
           nama: itemName,
           kategori: itemCategory,
-          jumlah: 1
+          jumlah: 1,
+          maxStock: stock // Store max stock for validation
         });
       }
-      
+
       updateCartBadge();
       renderCart();
     }
@@ -99,7 +111,15 @@
     function updateQuantity(itemId, change) {
       const item = cart.find(item => item.id === itemId);
       if (item) {
-        item.jumlah = Math.max(0, item.jumlah + change);
+        const newQuantity = item.jumlah + change;
+
+        // Check if new quantity would exceed stock
+        if (newQuantity > item.maxStock) {
+          alert(`Sorry, only ${item.maxStock} items available in stock!`);
+          return;
+        }
+
+        item.jumlah = Math.max(0, newQuantity);
         if (item.jumlah === 0) {
           cart = cart.filter(i => i.id !== itemId);
         }
@@ -137,58 +157,66 @@
         `;
       });
     }
-document.getElementById('checkoutForm').addEventListener('submit', async function(e) {
-  e.preventDefault();
+    document.getElementById('checkoutForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
 
-  if (cart.length === 0) {
-    alert('Cart is empty!');
-    return;
-  }
-
-  const formData = new FormData(this);
-  const checkoutData = {
-    acara: formData.get('acara'),
-    tanggal_acara: formData.get('tanggal_acara'),
-    tanggal_yang_diharapkan: formData.get('tanggal_yang_diharapkan'),
-    items: cart
-  };
-
-  try {
-    const response = await fetch('{{ route("cart.checkout") }}', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-      },
-      body: JSON.stringify(checkoutData)
-    });
-
-    const result = await response.json();
-
-    if (response.ok) {
-      // Jika sukses
-      if (result.status === 'success') {
-        alert(result.message);
-        cart = [];
-        updateCartBadge();
-        renderCart();
-        toggleCart();
-        this.reset();
-      } else {
-        // Jika API mengembalikan status error
-        alert(result.message || 'Something went wrong, please try again.');
+      if (cart.length === 0) {
+        alert('Cart is empty!');
+        return;
       }
-    } else {
-      // Jika respons HTTP error
-      throw new Error(result.message || `HTTP error! Status: ${response.status}`);
-    }
-  } catch (error) {
-    // Menangkap error dan menampilkannya
-    console.error('Error:', error);
-    alert(`${error.message}`);
-  }
-});
 
+      // Validate stock one more time before submission
+      for (const item of cart) {
+        if (item.jumlah > item.maxStock) {
+          alert(`Sorry, the quantity for ${item.nama} exceeds available stock!`);
+          return;
+        }
+      }
+
+      const formData = new FormData(this);
+      const checkoutData = {
+        acara: formData.get('acara'),
+        tanggal_acara: formData.get('tanggal_acara'),
+        tanggal_yang_diharapkan: formData.get('tanggal_yang_diharapkan'),
+        items: cart.map(item => ({
+          id: item.id,
+          nama: item.nama,
+          jumlah: item.jumlah
+        }))
+      };
+
+      try {
+        const response = await fetch('{{ route("cart.checkout") }}', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          },
+          body: JSON.stringify(checkoutData)
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          if (result.status === 'success') {
+            alert(result.message);
+            cart = [];
+            updateCartBadge();
+            renderCart();
+            toggleCart();
+            this.reset();
+          } else {
+            alert(result.message || 'Something went wrong, please try again.');
+          }
+        } else {
+          throw new Error(result.message || `HTTP error! Status: ${response.status}`);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert(`${error.message}`);
+      }
+    });
   </script>
 </body>
+
 </html>

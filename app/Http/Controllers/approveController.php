@@ -7,12 +7,14 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class approveController extends Controller
 {
-    public function approve(){
+    public function approve()
+    {
         $orders = Order::with(['user', 'items'])
-            ->whereHas('user', function($query) {
+            ->whereHas('user', function ($query) {
                 $query->where('satuan_kerja', Auth::user()->satuan_kerja);
             })
             ->where('status', '!=', 'setuju')
@@ -21,9 +23,10 @@ class approveController extends Controller
         return view('Approver.approval', compact('orders'));
     }
 
-    public function approveHistory(){
+    public function approveHistory()
+    {
         $orders = Order::with(['user', 'items'])
-            ->whereHas('user', function($query) {
+            ->whereHas('user', function ($query) {
                 $query->where('satuan_kerja', Auth::user()->satuan_kerja);
             })
             ->where('status', '=', 'setuju')
@@ -36,7 +39,7 @@ class approveController extends Controller
     {
         // Cari order berdasarkan noorder
         $order = Order::with('items')->where('noorder', $noorder)->first();
-        
+
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
         }
@@ -77,7 +80,7 @@ class approveController extends Controller
 
         // Update status
         $order->status = $request->status;
-        
+
         // Jika ada note dan status adalah Revisi, simpan note
         if ($request->status === 'Revisi' && $request->has('note')) {
             $order->revision_note = $request->note;
@@ -93,38 +96,93 @@ class approveController extends Controller
         $order = Order::where('noorder', $noorder)->first();
         $orderItems = OrderItem::where('noorder', $order->noorder)->get();
         $items = Barang::all(); // Get all available items
-    
-        return view('Approver.edit',compact('order','orderItems' ,'items'));
+
+        return view('Approver.edit', compact('order', 'orderItems', 'items'));
     }
-    
+
     public function update(Request $request, $noorder)
     {
-        $order = Order::where('noorder', $noorder)->first();
-        
-        $order->update([
-            'acara' => $request->acara,
-            'tanggal_acara' => $request->tanggal_acara,
-            'tanggal_yang_diharapkan' => $request->tanggal_yang_diharapkan,
-        ]);
-    
-        // Delete existing items
-        OrderItem::where('noorder', $order->noorder)->delete();
-    
-        // Add new items
-        foreach ($request->items as $item) {
-            OrderItem::create([
-                'noorder' => $order->noorder,
-                'item' => $item['nama'],
-                'jumlah' => $item['jumlah'],
-            ]);
+        try {
+            // Start database transaction
+            DB::beginTransaction();
+
+            try {
+                $order = Order::where('noorder', $noorder)->first();
+                if (!$order) {
+                    throw new \Exception("Order not found");
+                }
+
+                // Get current order items before updating
+                $currentItems = OrderItem::where('noorder', $noorder)->get();
+
+                // Return stock for current items
+                foreach ($currentItems as $currentItem) {
+                    $barang = Barang::where('Nama_Barang', $currentItem->item)->first();
+                    if ($barang) {
+                        // Add back the stock
+                        $barang->update([
+                            'Stok' => $barang->Stok + $currentItem->jumlah
+                        ]);
+                    }
+                }
+
+                // Validate new items stock
+                foreach ($request->items as $item) {
+                    $barang = Barang::where('Nama_Barang', $item['nama'])->first();
+
+                    if (!$barang) {
+                        throw new \Exception("Item {$item['nama']} not found");
+                    }
+
+                    if ($barang->Stok < $item['jumlah']) {
+                        throw new \Exception("Insufficient stock for {$item['nama']}. Available: {$barang->Stok}, Requested: {$item['jumlah']}");
+                    }
+                }
+
+                // Update order details
+                $order->update([
+                    'acara' => $request->acara,
+                    'tanggal_acara' => $request->tanggal_acara,
+                    'tanggal_yang_diharapkan' => $request->tanggal_yang_diharapkan,
+                ]);
+
+                // Delete existing items
+                OrderItem::where('noorder', $order->noorder)->delete();
+
+                // Add new items and update stock
+                foreach ($request->items as $item) {
+                    $barang = Barang::where('Nama_Barang', $item['nama'])->first();
+
+                    // Update stock
+                    $barang->update([
+                        'Stok' => $barang->Stok - $item['jumlah']
+                    ]);
+
+                    // Create new order item
+                    OrderItem::create([
+                        'noorder' => $order->noorder,
+                        'item' => $item['nama'],
+                        'jumlah' => $item['jumlah'],
+                    ]);
+                }
+
+                // If everything is successful, commit the transaction
+                DB::commit();
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Order updated successfully'
+                ]);
+            } catch (\Exception $e) {
+                // If there's an error, rollback the transaction
+                DB::rollback();
+                throw $e;
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 422);
         }
-    
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Order updated successfully'
-        ]);
     }
 }
-
-
-   
