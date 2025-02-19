@@ -154,7 +154,7 @@ a.sidebar-link:hover {
         <i class="lni lni-dashboard-square-1"></i>
       </button>
       <div class="sidebar-logo">
-          <a href="#">CodzSword</a>
+          <a href="#">GasNir</a>
       </div>
   </div>
   <ul class="sidebar-nav">
@@ -200,18 +200,8 @@ a.sidebar-link:hover {
             </li>
           </ul>
       </li>
-      <li class="sidebar-item">
-        <a href="#" class="sidebar-link">
-          <i class="lni lni-gear-1"></i>
-          <span>Setting</span>
-        </a>
-      </li>
     </ul>
     <div class="sidebar-footer">
-      <a href="#" class="sidebar-link">
-        <i class="lni lni-bell-1"></i>
-          <span>Notification</span>
-      </a>
       <a href="/logout" class="sidebar-link">
           <i class="lni lni-exit"></i>
           <span>Logout</span>

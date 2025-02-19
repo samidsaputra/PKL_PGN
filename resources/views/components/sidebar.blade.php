@@ -154,7 +154,7 @@ a.sidebar-link:hover {
       <i class="lni lni-dashboard-square-1"></i>
     </button>
     <div class="sidebar-logo">
-      <a href="#">CodzSword</a>
+      <a href="#">GasNir
     </div>
   </div>
   <ul class="sidebar-nav">
@@ -167,29 +167,7 @@ a.sidebar-link:hover {
     </li>
 
     <!-- Menu Berdasarkan Role -->
-    @if(auth()->user()->role === 'admin')
-      <li class="sidebar-item">
-        <a href="#" class="sidebar-link">
-          <i class="lni lni-agenda"></i>
-          <span>Task</span>
-        </a>
-      </li>
-      <li class="sidebar-item">
-        <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-           data-bs-target="#org" aria-expanded="false" aria-controls="org">
-          <i class="lni lni-user-multiple-4"></i>
-          <span>Organization</span>
-        </a>
-        <ul id="org" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-          <li class="sidebar-item">
-            <a href="{{ route('UserRegistration') }}" class="sidebar-link">User</a>
-          </li>
-          <li class="sidebar-item">
-            <a href="{{ route('daftar.satker') }}" class="sidebar-link">Satuan Kerja</a>
-          </li>
-        </ul>
-      </li>
-    @elseif(auth()->user()->role === 'Requester')
+    @if(auth()->user()->role === 'Requester')
       <li class="sidebar-item">
         <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
            data-bs-target="#request" aria-expanded="false" aria-controls="request">
@@ -227,10 +205,6 @@ a.sidebar-link:hover {
   </ul>
     <!-- Menu Footer -->
     <div class="sidebar-footer">
-      <a href="#" class="sidebar-link">
-        <i class="lni lni-bell-1"></i>
-        <span>Notification</span>
-      </a>
       <a href="/logout" class="sidebar-link">
         <i class="lni lni-exit"></i>
         <span>Logout</span>

@@ -19,9 +19,9 @@ class DashboardController extends Controller
             case 'admin':
                 return $this->adminDashboard();
             case 'Requester':
-                return view('Requester.dashboard');
+                return $this->requesterDashboard();
             case 'Approver':
-                return view('Approver.dashboard');
+                return $this->approverDashboard();
             default:
                 Auth::logout();
                 return redirect('/')->withErrors('Role tidak dikenali');
@@ -60,21 +60,8 @@ class DashboardController extends Controller
             ->count();
 
         // Get low stock items
-        $lowStockItems = Barang::where('stok', '<=', 50)
-            ->orderBy('stok', 'asc')
-            ->get();
-
-        // Get recent orders
-        $recentOrders = Order::with('user')
-            ->latest()
-            ->take(5)
-            ->get();
-
-        // Get monthly trend
-        $monthlyTrend = Order::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, COUNT(*) as total')
-            ->groupBy('month')
-            ->orderBy('month', 'desc')
-            ->take(6)
+        $lowStockItems = Barang::where('Stok', '<=', 50)
+            ->orderBy('Stok', 'desc')
             ->get();
 
         return view('admin.dashboard', compact(
@@ -83,10 +70,56 @@ class DashboardController extends Controller
             'pendingOrders',
             'monthlyOrders',
             'lowStockItems',
-            'recentOrders',
-            'monthlyTrend',
             'topItems',
             'topDivisions'
         ));
+    }
+
+    private function approverDashboard()
+    {
+        $pendingorders = Order::with(['user', 'items'])
+            ->whereHas('user', function ($query) {
+                $query->where('satuan_kerja', Auth::user()->satuan_kerja);
+            })
+            ->where('status', '!=', 'Setuju')
+            ->get();
+
+        $approvedorders = Order::with(['user', 'items'])
+            ->whereHas('user', function ($query) {
+                $query->where('satuan_kerja', Auth::user()->satuan_kerja);
+            })
+            ->where('status', 'Setuju')
+            ->get();
+
+        $totalorders = Order::with(['user', 'items'])
+            ->whereHas('user', function ($query) {
+                $query->where('satuan_kerja', Auth::user()->satuan_kerja);
+            })
+            ->get();
+        $revisionorders = Order::with(['user', 'items'])
+            ->whereHas('user', function ($query) {
+                $query->where('satuan_kerja', Auth::user()->satuan_kerja);
+            })
+            ->where('status', 'Sudah Revisi')
+            ->get();
+
+        return view('Approver.dashboard', compact(
+            'totalorders',
+            'pendingorders',
+            'approvedorders',
+            'revisionorders'
+        ));
+    }
+
+    private function requesterDashboard(){
+        $revisi = Order::with(['user', 'items'])
+        ->where('status','Revisi')
+        ->get();
+
+        $items = Barang::all();
+
+        return view('Requester.dashboard', compact(
+            'revisi',
+            'items'));
     }
 }

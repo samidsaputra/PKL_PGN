@@ -57,11 +57,12 @@
             <p><strong>Revision Note:</strong> {{ $order->revision_note }}</p>
             <div class="grid">
                 @foreach($items as $item)
-                <div class="product-card" onclick="addToCart('{{ $item->id }}', '{{ $item->Nama_Barang}}', '{{ $item->Kategori }}')">
-                    <img src="https://via.placeholder.com/150" alt="{{ $item->Nama_Barang }}">
+                <div class="product-card" onclick="addToCart('{{ $item->id }}', '{{ $item->Nama_Barang }}', '{{ $item->Kategori }}')">
+                    <img src="{{ url('storage/'.$item->Gambar) }}">
                     <div class="product-details">
                         <h3>{{ $item->Nama_Barang }}</h3>
                         <p>{{ $item->Kategori }}</p>
+                        <p>Stock: {{ $item->Stok }}</p>
                     </div>
                 </div>
                 @endforeach
@@ -93,20 +94,30 @@
             document.querySelector('.cart-badge').textContent = totalItems;
         }
 
-        function addToCart(itemId, itemName, itemCategory) {
+        function addToCart(itemId, itemName, itemCategory, stock) {
             const existingItem = cart.find(item => item.id === itemId);
-            
+
             if (existingItem) {
+                // Check if adding one more would exceed stock
+                if (existingItem.jumlah + 1 > stock) {
+                alert(`Sorry, only ${stock} items available in stock!`);
+                return;
+                }
                 existingItem.jumlah += 1;
             } else {
+                if (stock < 1) {
+                alert('Sorry, this item is out of stock!');
+                return;
+                }
                 cart.push({
-                    id: itemId,
-                    nama: itemName,
-                    kategori: itemCategory,
-                    jumlah: 1
+                id: itemId,
+                nama: itemName,
+                kategori: itemCategory,
+                jumlah: 1,
+                maxStock: stock // Store max stock for validation
                 });
             }
-            
+
             updateCartBadge();
             renderCart();
         }
@@ -114,9 +125,17 @@
         function updateQuantity(itemId, change) {
             const item = cart.find(item => item.id === itemId);
             if (item) {
-                item.jumlah = Math.max(0, item.jumlah + change);
+                const newQuantity = item.jumlah + change;
+
+                // Check if new quantity would exceed stock
+                if (newQuantity > item.maxStock) {
+                alert(`Sorry, only ${item.maxStock} items available in stock!`);
+                return;
+                }
+
+                item.jumlah = Math.max(0, newQuantity);
                 if (item.jumlah === 0) {
-                    cart = cart.filter(i => i.id !== itemId);
+                cart = cart.filter(i => i.id !== itemId);
                 }
                 updateCartBadge();
                 renderCart();
@@ -128,25 +147,25 @@
             cartContainer.innerHTML = '';
             cart.forEach(item => {
                 cartContainer.innerHTML += `
-                    <div class="cart-item">
-                        <div class="cart-item-details">
-                            <h3>${item.nama}</h3>
-                        </div>
-                        <div class="quantity-controls">
-                            <button type="button" class="quantity-btn" onclick="updateQuantity('${item.id}', -1)">-</button>
-                            <span>${item.jumlah}</span>
-                            <button type="button" class="quantity-btn" onclick="updateQuantity('${item.id}', 1)">+</button>
-                        </div>
+                <div class="cart-item">
+                    <div class="cart-item-details">
+                    <h3>${item.nama}</h3>
                     </div>
+                    <div class="quantity-controls">
+                    <button class="quantity-btn" onclick="updateQuantity('${item.id}', -1)">-</button>
+                    <span>${item.jumlah}</span>
+                    <button class="quantity-btn" onclick="updateQuantity('${item.id}', 1)">+</button>
+                    </div>
+                </div>
                 `;
             });
-
+            // Add cart items to checkout form
             const cartItemsContainer = document.getElementById('cart-items-container');
             cartItemsContainer.innerHTML = '';
             cart.forEach((item, index) => {
                 cartItemsContainer.innerHTML += `
-                    <input type="hidden" name="items[${index}][item]" value="${item.nama}">
-                    <input type="hidden" name="items[${index}][jumlah]" value="${item.jumlah}">
+                <input type="hidden" name="items[${index}][item]" value="${item.nama}">
+                <input type="hidden" name="items[${index}][jumlah]" value="${item.jumlah}">
                 `;
             });
         }
@@ -187,6 +206,8 @@
 
                 if (response.ok) {
                     alert(result.message);
+                    updateCartBadge();
+                    renderCart();
                     window.location.href = '/req/myrequest'; 
                 } else {
                     throw new Error(result.message || 'Something went wrong');

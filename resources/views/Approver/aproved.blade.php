@@ -12,8 +12,8 @@
 <body >
     <x-sidebar></x-sidebar>
     <main>
-        <div class="container">
-            <h1>Order Table</h1>
+        <div class=table-wrapper>
+            <h1>Order History</h1>
             @if(session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
             @endif
@@ -24,11 +24,9 @@
                         <th>Nomor Order</th>
                         <th>Acara</th>
                         <th>Tanggal Acara</th>
-                        <th>Tanggal Yang Diharapkan</th>
                         <th>Status</th>
                         <th>Penerima</th>
-                        <th>Tanggal Pemesanan</th>
-                        <th>Tanggal Revisi</th>
+                        <th>Terakhir Diubah</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -41,10 +39,8 @@
                                 <td>{{ $order->noorder }}</td>
                                 <td>{{ $order->acara }}</td>
                                 <td>{{ $order->tanggal_acara }}</td>
-                                <td>{{ $order->tanggal_yang_diharapkan }}</td>
                                 <td>{{ ucfirst($order->status) }}</td>
-                                <td>{{ $order->user->name }}</td>
-                                <td>{{ $order->created_at }}</td>
+                                <td>{{ $order->user->name }}</td>  <!-- Menampilkan nama user -->
                                 <td>{{ $order->updated_at }}</td>
                                 <th>
                                     <button class="btn-open-modal" 

@@ -1,11 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Barang;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RequestController extends Controller
 {
@@ -26,7 +28,7 @@ class RequestController extends Controller
     {
         // Cari order berdasarkan noorder
         $order = Order::with('items')->where('noorder', $noorder)->first();
-        
+
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
         }
@@ -64,34 +66,76 @@ class RequestController extends Controller
                 'items.*.jumlah' => 'required|integer|min:1',
             ])->validate();
 
-            do {
-                $noorder = Str::random(5);
-            } while (Order::where('noorder', $noorder)->exists());
+            // Start database transaction
+            DB::beginTransaction();
 
-            $order = Order::create([
-                'noorder' => $noorder,
-                'acara' => $validated['acara'],
-                'tanggal_acara' => $validated['tanggal_acara'],
-                'tanggal_yang_diharapkan' => $validated['tanggal_yang_diharapkan'],
-                'status' => 'Pending',
-                'user_id' => $request->user()->id ?? 'Anonymous',
-                'revision_note' => '-',
-            ]);
+            try {
+                // Pre-validate all items stock before processing
+                foreach ($validated['items'] as $item) {
+                    $barang = Barang::where('Nama_Barang', $item['nama'])->first();
 
-            foreach ($validated['items'] as $item) {
-                OrderItem::create([
-                    'noorder' => $order->noorder,
-                    'item' => $item['nama'],
-                    'jumlah' => $item['jumlah'],
+                    if (!$barang) {
+                        throw new \Exception("Item {$item['nama']} not found");
+                    }
+
+                    if ($barang->Stok < $item['jumlah']) {
+                        throw new \Exception("Insufficient stock for {$item['nama']}. Available: {$barang->Stok}, Requested: {$item['jumlah']}");
+                    }
+                }
+
+                do {
+                    $noorder = Str::random(5);
+                } while (Order::where('noorder', $noorder)->exists());
+
+                $order = Order::create([
+                    'noorder' => $noorder,
+                    'acara' => $validated['acara'],
+                    'tanggal_acara' => $validated['tanggal_acara'],
+                    'tanggal_yang_diharapkan' => $validated['tanggal_yang_diharapkan'],
+                    'status' => 'Pending',
+                    'user_id' => $request->user()->id ?? 'Anonymous',
+                    'revision_note' => '-',
                 ]);
-            }
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Order created successfully!',
-                'data' => $order,
-            ]);
-            
+                foreach ($validated['items'] as $item) {
+                    // Find the barang
+                    $barang = Barang::where('Nama_Barang', $item['nama'])->first();
+
+                    if (!$barang) {
+                        throw new \Exception("Item {$item['nama']} not found");
+                    }
+
+                    // Check if enough stock is available
+                    if ($barang->Stok < $item['jumlah']) {
+                        throw new \Exception("Insufficient stock for {$item['nama']}");
+                    }
+
+                    // Update stock
+                    $barang->update([
+                        'Stok' => $barang->Stok - $item['jumlah']
+                    ]);
+
+                    // Create order item
+                    OrderItem::create([
+                        'noorder' => $order->noorder,
+                        'item' => $item['nama'],
+                        'jumlah' => $item['jumlah'],
+                    ]);
+                }
+
+                // If everything is successful, commit the transaction
+                DB::commit();
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Order created successfully!',
+                    'data' => $order,
+                ]);
+            } catch (\Exception $e) {
+                // If there's an error, rollback the transaction
+                DB::rollback();
+                throw $e;
+            }
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
@@ -105,24 +149,24 @@ class RequestController extends Controller
         $order = Order::where('noorder', $noorder)->first();
         $orderItems = OrderItem::where('noorder', $order->noorder)->get();
         $items = Barang::all(); // Get all available items
-    
-        return view('Requester.edit',compact('order','orderItems' ,'items'));
+
+        return view('Requester.edit', compact('order', 'orderItems', 'items'));
     }
-    
+
     public function update(Request $request, $noorder)
     {
         $order = Order::where('noorder', $noorder)->first();
-        
+
         $order->update([
             'acara' => $request->acara,
             'tanggal_acara' => $request->tanggal_acara,
             'tanggal_yang_diharapkan' => $request->tanggal_yang_diharapkan,
-            'status' => 'Pending'
+            'status' => 'Sudah Revisi'
         ]);
-    
+
         // Delete existing items
         OrderItem::where('noorder', $order->noorder)->delete();
-    
+
         // Add new items
         foreach ($request->items as $item) {
             OrderItem::create([
@@ -131,7 +175,7 @@ class RequestController extends Controller
                 'jumlah' => $item['jumlah'],
             ]);
         }
-    
+
         return response()->json([
             'status' => 'success',
             'message' => 'Order updated successfully'

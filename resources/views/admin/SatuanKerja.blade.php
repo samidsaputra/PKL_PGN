@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,24 +14,39 @@
     <!-- Add meta tag for CSRF -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
+
 <body>
     <x-SidebarAdmin></x-SidebarAdmin>
     <main>
-        <div class="register">
-            <div class="form-section">
-                <h2>Create Satuan Kerja</h2>
-            
-                <form id="create-form" action="{{ route('createSatker') }}" method="POST">
-                    @csrf
-                    <input type="text" name="nama" value="{{ old('nama') }}" placeholder="Enter Satuan Kerja" required>
-                    <input type="text" name="id" value="{{ old('id') }}" placeholder="Enter ID" required>
-                    <input type="text" name="perusahaan" value="{{ old('perusahaan') }}" placeholder="Enter Perusahaan" required>
-                    <input type="submit" value="Input">
-                </form>
-            </div>
-        </div>
         <div class="table-user">
-            <h1>Satuan Kerja</h1>
+            <div class="header-section">
+                <h1>Satuan Kerja</h1>
+                <div class="header-actions">
+                    <button id="createSatkerBtn" class="create-btn">Create Satuan Kerja</button>
+                </div>
+            </div>
+            <div id="createModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn" data-modal="createModal">&times;</span>
+                    <h3>Create Satuan Kerja</h3>
+                    <form id="create-form" action="{{ route('createSatker') }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label for="nama">Satuan Kerja:</label>
+                            <input type="text" id="nama" name="nama" value="{{ old('nama') }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="id">ID:</label>
+                            <input type="text" id="id" name="id" value="{{ old('id') }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="perusahaan">Perusahaan:</label>
+                            <input type="text" id="perusahaan" name="perusahaan" value="{{ old('perusahaan') }}" required>
+                        </div>
+                        <button type="submit" class="submit-btn">Submit</button>
+                    </form>
+                </div>
+            </div>
             <table id="userTable">
                 <thead>
                     <tr>
@@ -47,24 +63,24 @@
                         <td>{{ $satker->id }}</td>
                         <td>{{ $satker->perusahaan }}</td>
                         <td>
-                            <button 
-                                type="button" 
-                                class="edit-btn" 
-                                data-nama="{{ $satker->nama }}" 
+                            <button
+                                type="button"
+                                class="edit-btn"
+                                data-nama="{{ $satker->nama }}"
                                 data-perusahaan="{{ $satker->perusahaan }}"
-                                data-id="{{ $satker->id}}" >
+                                data-id="{{ $satker->id}}">
                                 Edit
                             </button>
-                            <button 
-                                type="button" 
-                                class="delete-btn" 
+                            <button
+                                type="button"
+                                class="delete-btn"
                                 data-nama="{{ $satker->nama }}">
                                 Delete
                             </button>
                         </td>
                     </tr>
                     @endforeach
-                </tbody>    
+                </tbody>
             </table>
         </div>
         <div id="editModal" class="modal">
@@ -88,7 +104,7 @@
             </div>
         </div>
     </main>
-        <script>
+    <script>
         $(document).ready(function() {
             $.ajaxSetup({
                 headers: {
@@ -177,7 +193,7 @@
             // Delete button click handler
             $('.delete-btn').on('click', function() {
                 const nama = $(this).data('nama');
-                
+
                 Swal.fire({
                     title: 'Apakah Anda yakin?',
                     text: "Data Satuan Kerja akan dihapus permanen!",
@@ -229,7 +245,20 @@
                     $('#editModal').hide();
                 }
             });
+
+            // Add event listener for create modal button
+            $('#createSatkerBtn').on('click', function() {
+                $('#createModal').show();
+            });
+
+            // Add event listener for close create modal button
+            $('.close-btn, #createModal').on('click', function(e) {
+                if (e.target === this) {
+                    $('#createModal').hide();
+                }
+            });
         });
-        </script>
-    </body>
+    </script>
+</body>
+
 </html>
