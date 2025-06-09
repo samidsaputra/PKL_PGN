@@ -15,7 +15,7 @@ class AutoLogout
             $lastActivity = session('last_activity', now());
 
             // Cek apakah sudah lebih dari 30 detik sejak aktivitas terakhir
-            if (Carbon::parse($lastActivity)->diffInSeconds(now()) > 30) {
+            if (Carbon::parse($lastActivity)->diffInSeconds(now()) > 30000) {
                 Auth::logout();
                 session()->flush();
                 return redirect('/')->with('error', 'Session expired due to inactivity.');

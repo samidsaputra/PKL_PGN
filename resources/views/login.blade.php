@@ -10,18 +10,18 @@
 </head>
 <body>
     <div class="login-container">
-        @if ($errors->any())
-        <div class="alert alert-danger">
-            <i class="fa fa-exclamation-circle"></i>
-            <button class="close-btn" onclick="this.parentElement.style.display='none';">&times;</button>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
         <div class="form-section">
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <i class="fa fa-exclamation-circle"></i>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button class="close-btn" onclick="this.parentElement.style.display='none';">&times;</button>
+            </div>
+            @endif
             <h2>Hello, Welcome Back</h2>
         
             <form method="POST" action="{{ route('login.post') }}">
