@@ -13,9 +13,10 @@ class RequestController extends Controller
 {
     public function request()
     {
-        $items = Barang::all();
+        $items = Barang::orderBy('Nama_Barang', 'asc')->get();
         return view('Requester.request', compact('items'));
     }
+
 
     public function history()
     {
@@ -27,7 +28,9 @@ class RequestController extends Controller
     public function show($noorder)
     {
         // Cari order berdasarkan noorder
-        $order = Order::with('items')->where('noorder', $noorder)->first();
+        $order = Order::with(['items' => function ($query) {
+        $query->orderBy('created_at', 'asc');
+        }])->where('noorder', $noorder)->first();
 
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
