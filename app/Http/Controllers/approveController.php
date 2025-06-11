@@ -17,11 +17,12 @@ class approveController extends Controller
             ->whereHas('user', function ($query) {
                 $query->where('satuan_kerja', Auth::user()->satuan_kerja);
             })
-            ->where('status', '!=', 'setuju')
+            ->whereNotIn('status', ['setuju', 'tolak']) // hanya status selain setuju & tolak
             ->get();
 
-        return view('Approver.approval', compact('orders'));
-    }
+            return view('Approver.approval', compact('orders'));
+        }
+    
 
     public function approveHistory()
     {
@@ -29,7 +30,7 @@ class approveController extends Controller
             ->whereHas('user', function ($query) {
                 $query->where('satuan_kerja', Auth::user()->satuan_kerja);
             })
-            ->where('status', '=', 'setuju')
+            ->whereIn('status', ['setuju', 'tolak']) // tampilkan order setuju & tolak
             ->get();
 
         return view('Approver.aproved', compact('orders'));
@@ -76,6 +77,19 @@ class approveController extends Controller
 
         if (!$order) {
             return response()->json(['message' => 'Order tidak ditemukan'], 404);
+        }
+
+        // Jika status Tolak, kembalikan stok barang
+        if ($request->status === 'Tolak') {
+            $orderItems = OrderItem::where('noorder', $noorder)->get();
+            foreach ($orderItems as $item) {
+                $barang = Barang::where('Nama_Barang', $item->item)->first();
+                if ($barang) {
+                    $barang->update([
+                        'Stok' => $barang->Stok + $item->jumlah
+                    ]);
+                }
+            }
         }
 
         // Update status

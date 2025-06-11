@@ -33,14 +33,14 @@
                 <tbody>
                     @php $no = 1; @endphp
                     @foreach($orders as $order)
-                        @if(strtolower($order->status) === 'setuju')
+                        @if(strtolower($order->status) === 'setuju' || strtolower($order->status) === 'tolak')
                             <tr>
                                 <td>{{ $no++ }}</td>
                                 <td>{{ $order->noorder }}</td>
                                 <td>{{ $order->acara }}</td>
                                 <td>{{ $order->tanggal_acara }}</td>
                                 <td>{{ ucfirst($order->status) }}</td>
-                                <td>{{ $order->user->name }}</td>  <!-- Menampilkan nama user -->
+                                <td>{{ $order->user->name }}</td>
                                 <td>{{ $order->updated_at }}</td>
                                 <th>
                                     <button class="btn-open-modal" 
