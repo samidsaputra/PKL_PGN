@@ -1,0 +1,263 @@
+:root {
+  --primary-blue: #1EAAC9;
+  --text-dark: #333;
+  --text-gray: #666;
+  --bg-white: #fff;
+  --bg-gray: #f8f8f8;
+  --border-color: #e0e0e0;
+  --danger-red: #FF4444;
+  --danger-bg: #FFE4E4;
+  --shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-gray);
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+.main-content {
+  padding: 2rem;
+  padding-left: 3.5rem;
+  padding-right: 0rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.dashboard-header {
+  font-size: 1.8rem;
+  font-weight: 700;
+  padding-left: 2rem;
+  width: 100%;
+  max-width: 1400px;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 1rem auto 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  padding: 20px 0;
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background: linear-gradient(145deg, #ffffff, #f8f9fa);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid #e9ecef;
+  position: relative;
+}
+
+.product-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border-color: #1EAAC9;
+}
+
+.product-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #1EAAC9, #28a745);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.product-card:hover::before {
+  opacity: 1;
+}
+
+.product-image-container {
+  width: 100%;
+  height: 230px;
+  overflow: hidden;
+  background: #f8f9fa;
+}
+
+.product-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover img {
+  transform: scale(1.1);
+}
+
+.product-details {
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-grow: 1;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+}
+
+.product-details h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.product-category {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: auto;
+  font-weight: 500;
+}
+
+.product-stock {
+  display: inline-flex;
+  align-items: center;
+  background: #28a745;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  justify-content: center;
+}
+
+.product-stock.low-stock {
+  background: #ff9800;
+}
+
+.product-stock.out-of-stock {
+  background: #FF4444;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stats-section {
+  background: var(--bg-white);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  height: 300px;
+  overflow: hidden;
+}
+
+.stat-item {
+  margin-bottom: 0;
+}
+
+.stat-title {
+  color: var(--text-gray);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table thead {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 1;
+}
+
+.table th,
+.table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.table th {
+  font-weight: 600;
+  color: var(--text-gray);
+  background: var(--bg-gray);
+}
+
+/* Scrollbar for table */
+.table-responsive::-webkit-scrollbar {
+  width: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 1rem;
+  }
+
+  .product-card {
+    flex: 0 0 220px;
+  }
+
+  .dashboard-header {
+    font-size: 1.5rem;
+    padding: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .table {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-card {
+    flex: 0 0 180px;
+  }
+
+  .product-image-container {
+    height: 160px;
+  }
+
+  .dashboard-header {
+    font-size: 1.2rem;
+    padding: 0.6rem;
+    margin-bottom: 1rem;
+  }
+}

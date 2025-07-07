@@ -1,0 +1,374 @@
+:root {
+  --primary-blue: #1EAAC9;
+  --text-dark: #333;
+  --text-gray: #666; 
+  --bg-white: #fff;
+  --bg-gray: #f8f8f8;
+  --border-color: #e0e0e0;
+  --danger-red: #FF4444;
+  --danger-bg: #FFE4E4;
+  --shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-gray);
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+/* Layout */
+.main-content {
+  padding: 2rem;
+  padding-left: 3.5rem;
+  padding-right: 0rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.dashboard-header {
+  font-size: 1.8rem;
+  font-weight: 700;
+  padding-left: 2rem;
+  width: 100%;
+  max-width: 1400px;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  margin-top: 1rem;
+}
+
+/* Product Slider */
+.product-slider {
+  position: relative;
+  margin-bottom: 2rem;
+  background: var(--bg-white);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+.product-row {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  padding: 0.5rem;
+}
+
+.product-card {
+  flex: 0 0 250px;
+  background: var(--bg-white);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+  box-shadow: var(--shadow);
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+}
+
+.product-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-details {
+  padding: 1rem;
+}
+
+.product-name {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.product-price {
+  color: var(--primary-blue);
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.rating {
+  color: #ffd700;
+  margin-bottom: 1rem;
+}
+
+.add-to-cart {
+  width: 100%;
+  padding: 0.75rem;
+  background: var(--primary-blue);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.add-to-cart:hover {
+  background: darken(var(--primary-blue), 10%);
+}
+
+/* Slider Controls */
+.slider-controls {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.slider-arrow {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: var(--primary-blue);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
+}
+
+.slider-arrow:hover {
+  background: darken(var(--primary-blue), 10%);
+  transform: scale(1.1);
+}
+
+.prev-arrow {
+  left: -20px;
+}
+
+.next-arrow {
+  right: -20px;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stats-section {
+  background: var(--bg-white);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  height: 300px; /* Set fixed height based on first section */
+  overflow: hidden; /* Prevent content overflow */
+}
+
+.stats-section:first-child {
+  display: grid;
+}
+
+.stats-section:last-child {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-item {
+  margin-bottom: 0rem;
+}
+
+.stat-item:last-child {
+  margin-bottom: 0;
+}
+
+.stat-title {
+  color: var(--text-gray);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+}
+
+.stat-value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.table-responsive {
+  flex: 1;
+  overflow-y: auto;
+  height: calc(100% - 3rem); /* Subtract section title height and margins */
+}
+
+.stock-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.stock-table thead {
+  position: sticky;
+  top: 0;
+  background-color: #fff; /* Warna background header */
+  z-index: 1;
+}
+
+.stock-table th,
+.stock-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.stock-table th {
+  font-weight: 600;
+  color: var(--text-gray);
+  background: var(--bg-gray);
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.status-critical {
+  background: var(--danger-bg);
+  color: var(--danger-red);
+}
+
+.status-warning {
+  background: #FFF3E0;
+  color: #FF9800;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    padding: 1rem;
+  }
+
+  .product-card {
+    flex: 0 0 220px;
+  }
+
+  .slider-controls {
+    display: none;
+  }
+
+  .stock-table {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-card {
+    flex: 0 0 180px;
+  }
+
+  .product-image {
+    height: 160px;
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+  }
+}
+
+/* Responsive adjustment */
+@media (max-width: 768px) {
+  .dashboard-header {
+      font-size: 1.5rem;
+      padding: 0.8rem;
+      margin-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-header {
+      font-size: 1.2rem;
+      padding: 0.6rem;
+      margin-bottom: 1rem;
+  }
+}
+/* Styling untuk scrollbar (opsional) */
+.table-responsive::-webkit-scrollbar {
+  width: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.stats-section-chart {
+    background: var(--bg-white);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    height: max-content;
+    overflow: hidden;
+}
+
+.stats-section-chart .dashboard-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.stats-section-chart h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-dark);
+}
+
+.stats-section-chart canvas {
+    flex: 1;
+    width: 100% !important;
+    height: calc(100% - 2rem) !important; /* Subtract the header height and margin */
+}
+
+

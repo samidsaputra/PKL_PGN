@@ -1,0 +1,241 @@
+/* Global styles and variables */
+:root {
+  --primary-color: #4a90e2;
+  --secondary-color: #2c3e50;
+  --success-color: #2ecc71;
+  --danger-color: #e74c3c;
+  --background-color: #f5f6fa;
+  --text-color: #2c3e50;
+  --border-radius: 8px;
+  --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  height: 100vh;
+  display: flex;
+}
+
+main {
+  padding: 2rem;
+  padding-left: 3.5rem;
+  padding-right: 0rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Modal styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 800px;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.make-user-btn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.make-user-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Add this new section for the header container */
+.table-user-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 2;
+}
+
+/* Update h1 styles */
+.table-user h1 {
+  color: var(--secondary-color);
+  font-size: 1.8rem;
+  margin: 0;
+  /* Remove default margin */
+}
+
+/* Update make-user-btn styles */
+.make-user-btn {
+  padding: 10px 20px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.make-user-btn:hover {
+  background-color: #357abd;
+}
+
+/* Form Section Styles */
+.register {
+  background: white;
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  margin-bottom: 2rem;
+}
+
+.form-section h2 {
+  color: var(--secondary-color);
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+#user-form {
+  display: grid;
+  gap: 1rem;
+  min-width: 600px;
+}
+
+.form-section input[type="email"],
+.form-section input[type="text"],
+.form-section input[type="password"],
+.form-section select {
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.form-section input:focus,
+.form-section select:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+.form-section input[type="submit"] {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.8rem;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.form-section input[type="submit"]:hover {
+  background-color: #357abd;
+}
+
+/* Table Styles */
+.table-user {
+  background: white;
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  width: 90%;
+  height: 100%; /* Set a fixed height */
+  position: relative; /* Add position relative */
+  display: flex;
+  flex-direction: column;
+}
+
+.table-user h1 {
+  color: var(--secondary-color);
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+}
+
+.table-wrapper {
+  flex: 1;
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+#userTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#userTable th,
+#userTable td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+#userTable th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: var(--secondary-color);
+}
+
+#userTable thead {
+  position: sticky;
+  top: 0;
+  background-color: #f8f9fa;
+  z-index: 1;
+}
+
+#userTable thead th {
+  background-color: #f8f9fa;
+}
+
+#userTable tr:hover {
+  background-color: #f8f9fa;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  main {
+    margin-left: 0;
+    padding: 1rem;
+  }
+
+  .register,
+  .table-user {
+    padding: 1rem;
+  }
+
+  #userTable {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}

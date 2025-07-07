@@ -2,47 +2,53 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+    public $incrementing = false; // UUID tidak auto-increment
+    protected $keyType = 'string'; // UUID adalah string
+
+    // Daftar atribut yang dapat diisi secara massal
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'id', 'name', 'email', 'password', 'role', 'satuan_kerja'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
+    // Atribut yang disembunyikan dalam array atau JSON
     protected $hidden = [
-        'password',
-        'remember_token',
+        'password', 'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    // Konversi tipe atribut
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    // Event untuk menetapkan UUID saat model dibuat
+    protected static function boot()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->id)) {
+                $model->id = (string) Str::uuid();
+            }
+        });
     }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function satuanKerja()
+    {
+        return $this->belongsTo(SatuanKerja::class, 'satuan_kerja', 'nama');
+    }
+
 }
