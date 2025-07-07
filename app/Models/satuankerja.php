@@ -22,4 +22,10 @@ class SatuanKerja extends Model
         'nama',
         'perusahaan',
     ];
+
+    public function users()
+    {
+        return $this->hasMany(User::class, 'satuan_kerja', 'nama');
+    }
+
 }

@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('satuan_kerja')->nullable(); // Kolom baru untuk satuan kerja
             $table->rememberToken();
             $table->timestamps();
+            
+            $table->foreign('satuan_kerja')->references('nama')->on('satuan_kerja')->onDelete('set null');
         });
 
         // Tabel Password Reset Tokens

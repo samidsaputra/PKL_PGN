@@ -18,6 +18,7 @@ class approveController extends Controller
                 $query->where('satuan_kerja', Auth::user()->satuan_kerja);
             })
             ->whereNotIn('status', ['setuju', 'tolak']) // hanya status selain setuju & tolak
+            ->orderBy('created_at', 'desc')
             ->get();
 
             return view('Approver.approval', compact('orders'));
@@ -31,7 +32,16 @@ class approveController extends Controller
                 $query->where('satuan_kerja', Auth::user()->satuan_kerja);
             })
             ->whereIn('status', ['setuju', 'tolak']) // tampilkan order setuju & tolak
+            ->orderBy('created_at', 'desc')
             ->get();
+
+        $orders = Order::with(['user', 'items'])
+    ->whereHas('user', function ($query) {
+        $query->where('satuan_kerja', Auth::user()->satuan_kerja);
+    })
+    ->whereIn('status', ['setuju', 'tolak'])
+    ->orderBy('created_at', 'desc') // urutkan dari yang terbaru
+    ->get();
 
         return view('Approver.aproved', compact('orders'));
     }

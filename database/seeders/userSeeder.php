@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
                 'email' => 'admin@example.com',
                 'password' => Hash::make('password'), // Password default
                 'role' => 'admin',
-                'satuan_kerja' => 'CSS', // Atur sesuai kebutuhan, bisa null
+                'satuan_kerja' => 'Corporate Support & Services', // Atur sesuai kebutuhan, bisa null
             ],
             [
                 'id' => 'CSS002', // UUID sebagai primary key
@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
                 'email' => 'requester@example.com',
                 'password' => Hash::make('password'), // Password default
                 'role' => 'requester',
-                'satuan_kerja' => 'CSS',
+                'satuan_kerja' => 'Corporate Support & Services',
             ],
             [
                 'id' => 'CSS003', // UUID sebagai primary key
@@ -37,7 +37,7 @@ class UserSeeder extends Seeder
                 'email' => 'approver@example.com',
                 'password' => Hash::make('password'), // Password default
                 'role' => 'approver',
-                'satuan_kerja' => 'CSS',
+                'satuan_kerja' => 'Corporate Support & Services',
             ],
         ];
         foreach($userData as $key => $val){

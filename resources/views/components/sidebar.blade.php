@@ -147,6 +147,60 @@ a.sidebar-link:hover {
     transform: rotate(45deg);
     transition: all .2s ease-out;
 }
+.confirmation-modal-logout {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+}
+.confirmation-content {
+    background: white;
+    padding: 20px 30px;
+    border-radius: 8px;
+    max-width: 320px;
+    width: 90%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+}
+.confirmation-content h3 {
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+.confirmation-content p {
+    margin-bottom: 25px;
+    font-size: 1rem;
+}
+.confirmation-buttons {
+    display: flex;
+    justify-content: space-around;
+}
+.confirm-btn, .cancel-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+.confirm-btn {
+    background-color: #dc3545;
+    color: white;
+}
+.confirm-btn:hover {
+    background-color: #c82333;
+}
+.cancel-btn {
+    background-color: #6c757d;
+    color: white;
+}
+.cancel-btn:hover {
+    background-color: #5a6268;
+}
 </style>
 <aside id="sidebar">
   <div class="d-flex">
@@ -205,10 +259,30 @@ a.sidebar-link:hover {
   </ul>
     <!-- Menu Footer -->
     <div class="sidebar-footer">
-      <a href="/logout" class="sidebar-link">
-        <i class="lni lni-exit"></i>
-        <span>Logout</span>
-      </a>
+        <a href="#" class="sidebar-link" id="logoutBtn">
+            <i class="lni lni-exit"></i>
+            <span>Logout</span>
+        </a>
+    </div>
+    <!-- Logout Confirmation Modal -->
+    <div class="confirmation-modal-logout" id="logoutModal" style="display:none;">
+      <div class="confirmation-content">
+        <div style="text-align:center; margin-bottom: 15px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="none" viewBox="0 0 24 24" stroke="#f6b26b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 10px;">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12" y2="16" />
+          </svg>
+        </div>
+        <h3 style="text-align:center; margin-bottom: 20px; font-weight: 600;">
+          Logout Confirmation
+        </h3>
+        <p style="text-align:center; margin-bottom: 25px;">Are you sure you want to logout?</p>
+        <div class="confirmation-buttons">
+          <button class="confirm-btn" id="confirmLogoutBtn">Logout</button>
+          <button class="cancel-btn" id="cancelLogoutBtn">Cancel</button>
+        </div>
+      </div>
     </div>
 </aside>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
@@ -219,5 +293,17 @@ const hamBurger = document.querySelector(".toggle-btn");
 
 hamBurger.addEventListener("click", function () {
   document.querySelector("#sidebar").classList.toggle("expand");
+});
+document.getElementById('logoutBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('logoutModal').style.display = 'flex';
+});
+
+document.getElementById('cancelLogoutBtn').addEventListener('click', function() {
+    document.getElementById('logoutModal').style.display = 'none';
+});
+
+document.getElementById('confirmLogoutBtn').addEventListener('click', function() {
+    window.location.href = '/logout';
 });
 </script>

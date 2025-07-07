@@ -21,6 +21,7 @@ return new class extends Migration
             $table->timestamps(); // Kolom created_at dan updated_at
 
             $table->foreign('noorder')->references('noorder')->on('orders')->onDelete('cascade');
+            $table->foreign('item')->references('Nama_Barang')->on('barang')->onDelete('restrict'); 
         });
     }
 

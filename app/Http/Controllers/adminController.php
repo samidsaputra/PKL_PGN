@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class adminController extends Controller
 {
     public function pesanan(){
-        $orders = Order::all();
+        $orders = Order::orderBy('created_at', 'desc')->get();
         
         return view('admin.Pesanan', compact('orders'));
     }

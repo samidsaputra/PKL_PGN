@@ -47,65 +47,46 @@
     }
 
     /* Table */
-    .table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: 1px solid #dee2e6; /* Border luar tabel */
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
 
-    .table th:nth-child(1) { /* Kolom No */
-        width: 1rem;
-    }
-    
-    .table th:nth-child(2) { /* Kolom Nomor Order */
-        width: 10rem;
-    }
-    
-    .table th:nth-child(3) { /* Kolom Acara */
-        width: 34rem;
-    }
-    
-    .table th:nth-child(4) { /* Kolom Tanggal Acara */
-        width: 10rem;
-    }
-    
-    .table th:nth-child(5) { /* Kolom Status */
-        width: 8rem;
-    }
+.table th,
+.table td {
+    padding: 16px 20px;
+    text-align: left;
+    font-size: 14px;
+    border-bottom: 1px solid #dee2e6;
+}
 
-    .table th:nth-child(6) { /* Kolom Penerima */
-        width: 5rem;
-    }
+.table th {
+    background-color: #f1f3f5;
+    color: #495057;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
 
-    .table th:nth-child(7) { /* Kolom Terakhir diubah */
-        width: 12rem;
-    }
+.table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
 
-    .table th:nth-child(8) { /* Kolom Action */
-        width: 5rem;
-    }
+.table tbody tr:hover {
+    background-color: #e9f5ff;
+    transition: background-color 0.3s ease;
+}
 
-    .table th, .table td {
-        text-align: left;
-        padding: 12px 15px;
-        align-content: center;
-        border: 1px solid #ddd;
-    }
-
-    .table th {
-        background-color: #f8f9fa;
-        font-weight: 600;
-        text-transform: uppercase;
-        text-align: center;
-    }
-
-    .table tbody tr:nth-child(odd) {
-        background-color: #f9f9f9;
-    }
-
-    .table tbody tr:hover {
-        background-color: #f1f1f1;
-    }
+/* Tambahan: untuk menghilangkan border ganda di bawah baris terakhir */
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
 
     /* Buttons */
     /* Button Styles */

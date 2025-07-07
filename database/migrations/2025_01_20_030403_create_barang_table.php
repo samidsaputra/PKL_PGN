@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('barang', function (Blueprint $table) {
             $table->id(); // Kolom id sebagai primary key
-            $table->string('Nama_Barang'); // Kolom nama_barang
+            $table->string('Nama_Barang')->unique(); // Kolom nama_barang
             $table->unsignedBigInteger('Kategori_Id'); // Kolom kategori sebagai foreign key
             $table->string('Stok');
             $table->string('Kategori');

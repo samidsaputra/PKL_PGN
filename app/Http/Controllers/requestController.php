@@ -62,7 +62,7 @@ class RequestController extends Controller
             $validated = validator($data, [
                 'acara' => 'required|string|max:255',
                 'tanggal_acara' => 'required|date',
-                'tanggal_yang_diharapkan' => 'required|date',
+                'tanggal_yang_diharapkan' => 'required|date|after_or_equal:today|before_or_equal:tanggal_acara',
                 'items' => 'required|array',
                 'items.*.nama' => 'required|string',
                 'items.*.id' => 'required|string',
@@ -128,7 +128,7 @@ class RequestController extends Controller
 
                 // If everything is successful, commit the transaction
                 DB::commit();
-
+                // return redirect()->back();
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Order created successfully!',
@@ -138,11 +138,16 @@ class RequestController extends Controller
                 // If there's an error, rollback the transaction
                 DB::rollback();
                 throw $e;
+                
             }
         } catch (\Exception $e) {
+            $message = $e->getMessage();
+            if (strpos($message, 'tanggal_yang_diharapkan') !== false) {
+                $message = 'Tanggal yang diharapkan harus berada di masa sekarang atau masa depan dan tidak boleh melewati tanggal acara.';
+            }
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $message
             ], 422);
         }
     }

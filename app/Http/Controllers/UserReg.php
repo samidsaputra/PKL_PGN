@@ -102,7 +102,7 @@ class UserReg extends Controller
      */
     public function resetToDefaultPassword(User $user)
     {
-        $defaultPassword = 'password123'; // Default password
+        $defaultPassword = 'password'; // Default password
 
         $user->update([
             'password' => Hash::make($defaultPassword),

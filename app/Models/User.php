@@ -45,4 +45,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class);
     }
+
+    public function satuanKerja()
+    {
+        return $this->belongsTo(SatuanKerja::class, 'satuan_kerja', 'nama');
+    }
+
 }

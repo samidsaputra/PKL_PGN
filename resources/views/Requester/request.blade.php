@@ -12,6 +12,9 @@
 <body>
   <x-sidebar></x-sidebar>
 
+  <!-- Alert Container for error messages -->
+  <div id="errorAlert" class="error-alert" style="display:none;"></div>
+
   <!-- Cart Icon -->
   <div class="cart-icon" onclick="toggleCart()">
     🛒
@@ -28,7 +31,7 @@
         <label>Quantity:</label>
         <div class="quantity-input-container">
           <button type="button" class="quantity-btn-modal" onclick="updateModalQuantity(-1)" id="decreaseBtn">−</button>
-          <input type="number" class="quantity-input" id="modalQuantity" value="1" min="1" readonly>
+          <input type="number" class="quantity-input" id="modalQuantity" value="1" min="1">
           <button type="button" class="quantity-btn-modal" onclick="updateModalQuantity(1)" id="increaseBtn">+</button>
         </div>
       </div>
@@ -139,9 +142,33 @@ function updateModalQuantity(change) {
   document.getElementById('increaseBtn').disabled = modalQuantity >= maxAvailable;
 }
 
+document.getElementById('modalQuantity').addEventListener('input', function () {
+  if (!pendingItem) return;
+
+  let inputVal = parseInt(this.value);
+  const existingItem = cart.find(item => item.id === pendingItem.id);
+  const currentCartQuantity = existingItem ? existingItem.jumlah : 0;
+  const maxAvailable = pendingItem.stock - currentCartQuantity;
+
+  // Validasi input
+  if (isNaN(inputVal) || inputVal < 1) {
+    inputVal = 1;
+  } else if (inputVal > maxAvailable) {
+    inputVal = maxAvailable;
+  }
+
+  modalQuantity = inputVal;
+  this.value = modalQuantity;
+
+  // Update tombol enable/disable
+  document.getElementById('decreaseBtn').disabled = modalQuantity <= 1;
+  document.getElementById('increaseBtn').disabled = modalQuantity >= maxAvailable;
+});
+
+
 function showConfirmation(itemId, itemName, itemCategory, stock) {
   if (stock === 0) {
-    alert('Sorry, this item is out of stock!');
+    showErrorMessage('Sorry, this item is out of stock!');
     return;
   }
 
@@ -157,7 +184,7 @@ function showConfirmation(itemId, itemName, itemCategory, stock) {
   const maxAvailable = stock - currentCartQuantity;
 
   if (maxAvailable <= 0) {
-    alert(`Sorry, you already have the maximum available quantity (${stock}) for this item in your cart!`);
+    showErrorMessage(`Sorry, you already have the maximum available quantity (${stock}) for this item in your cart!`);
     return;
   }
 
@@ -185,11 +212,11 @@ function confirmAddToCart() {
 
   if (existingItem) {
     const totalQuantity = existingItem.jumlah + modalQuantity;
-    if (totalQuantity > pendingItem.stock) {
-      alert(`Sorry, only ${pendingItem.stock} items available in stock!`);
-      closeConfirmation();
-      return;
-    }
+  if (totalQuantity > pendingItem.stock) {
+    showErrorMessage(`Sorry, only ${pendingItem.stock} items available in stock!`);
+    closeConfirmation();
+    return;
+  }
     existingItem.jumlah += modalQuantity;
   } else {
     cart.push({
@@ -301,22 +328,47 @@ function renderCart() {
   });
 }
 
-document.getElementById('checkoutForm').addEventListener('submit', async function (e) {
+const orderConfirmationModal = document.createElement('div');
+orderConfirmationModal.id = 'orderConfirmationModal';
+orderConfirmationModal.className = 'confirmation-modal';
+orderConfirmationModal.innerHTML = `
+  <div class="confirmation-content" role="dialog" aria-modal="true" aria-labelledby="orderConfirmationTitle" aria-describedby="orderConfirmationDesc">
+    <h3 id="orderConfirmationTitle">Confirm Order</h3>
+    <p id="orderConfirmationDesc">Are you sure you want to place this order?</p>
+    <div class="confirmation-buttons">
+      <button class="confirm-btn" id="confirmOrderBtn" type="button">Yes, Place Order</button>
+      <button class="cancel-btn" id="cancelOrderBtn" type="button">Cancel</button>
+    </div>
+  </div>
+`;
+document.body.appendChild(orderConfirmationModal);
+
+const checkoutForm = document.getElementById('checkoutForm');
+checkoutForm.addEventListener('submit', function (e) {
   e.preventDefault();
 
   if (cart.length === 0) {
-    alert('Cart is empty!');
+    showErrorMessage('Cart is empty!');
     return;
   }
 
   for (const item of cart) {
     if (item.jumlah > item.maxStock) {
-      alert(`Sorry, the quantity for ${item.nama} exceeds available stock!`);
+      showErrorMessage(`Sorry, the quantity for ${item.nama} exceeds available stock!`);
       return;
     }
   }
 
-  const formData = new FormData(this);
+  // Show the custom confirmation modal
+  orderConfirmationModal.classList.add('active');
+  // Set focus to confirm button for accessibility
+  document.getElementById('confirmOrderBtn').focus();
+});
+
+document.getElementById('confirmOrderBtn').addEventListener('click', async function () {
+  orderConfirmationModal.classList.remove('active');
+
+  const formData = new FormData(checkoutForm);
   const checkoutData = {
     acara: formData.get('acara'),
     tanggal_acara: formData.get('tanggal_acara'),
@@ -347,7 +399,8 @@ document.getElementById('checkoutForm').addEventListener('submit', async functio
         updateCartBadge();
         renderCart();
         toggleCart();
-        this.reset();
+        checkoutForm.reset();
+        location.reload()
       } else {
         alert(result.message || 'Something went wrong, please try again.');
       }
@@ -356,8 +409,14 @@ document.getElementById('checkoutForm').addEventListener('submit', async functio
     }
   } catch (error) {
     console.error('Error:', error);
-    alert(`${error.message}`);
+    showErrorMessage(`${error.message}`);
   }
+});
+
+document.getElementById('cancelOrderBtn').addEventListener('click', function () {
+  orderConfirmationModal.classList.remove('active');
+  // Return focus to the Place Order button for accessibility
+  document.querySelector('.checkout-btn').focus();
 });
 
 document.getElementById('confirmationModal').addEventListener('click', function (e) {
@@ -368,18 +427,22 @@ document.getElementById('confirmationModal').addEventListener('click', function 
 
 updateCartBadge();
 
-const style = document.createElement('style');
-style.textContent = `
-  @keyframes slideIn {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-  }
-  @keyframes slideOut {
-    from { transform: translateX(0); opacity: 1; }
-    to { transform: translateX(100%); opacity: 0; }
-  }
-`;
-document.head.appendChild(style);
+
+function showErrorMessage(message) {
+  const alertBox = document.getElementById('errorAlert');
+  alertBox.textContent = message;
+  alertBox.style.display = 'block';
+  alertBox.style.opacity = '1';
+
+  setTimeout(() => {
+    alertBox.style.transition = 'opacity 0.5s ease';
+    alertBox.style.opacity = '0';
+    setTimeout(() => {
+      alertBox.style.display = 'none';
+      alertBox.style.transition = '';
+    }, 500);
+  }, 3500);
+}
 
   </script>
 </body>

@@ -49,19 +49,27 @@ h1 {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    border: 1px solid #dee2e6; /* Border luar tabel */
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 .table th,
 .table td {
+    padding: 16px 20px;
     text-align: left;
-    padding: 12px 15px;
-    border: 1px solid #ddd;
+    font-size: 14px;
+    border-bottom: 1px solid #dee2e6;
 }
 
 .table th {
-    background-color: #f8f9fa;
+    background-color: #f1f3f5;
+    color: #495057;
     font-weight: 600;
     text-transform: uppercase;
+    letter-spacing: 0.03em;
 }
 
 .table tbody tr:nth-child(odd) {
@@ -69,8 +77,15 @@ h1 {
 }
 
 .table tbody tr:hover {
-    background-color: #f1f1f1;
+    background-color: #e9f5ff;
+    transition: background-color 0.3s ease;
 }
+
+/* Tambahan: untuk menghilangkan border ganda di bawah baris terakhir */
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
 
 /* Buttons */
 /* Button Styles */
@@ -189,18 +204,47 @@ h1 {
     align-items: center;
 }
 
+/* Table di dalam Modal */
 .modal-body table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
+    border: 1px solid #dee2e6; /* Border luar tabel */
+    border-radius: 6px;
+    overflow: hidden;
+    background-color: #fff;
+    margin-top: 12px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05); /* Opsional: sedikit bayangan */
 }
 
 .modal-body th,
 .modal-body td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #dee2e6;
+    font-size: 14px;
     text-align: left;
-    padding: 8px;
-    border: 1px solid #ddd;
 }
+
+.modal-body th {
+    background-color: #f8f9fa;
+    color: #343a40;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.modal-body tbody tr:nth-child(odd) {
+    background-color: #fdfdfd;
+}
+
+.modal-body tbody tr:hover {
+    background-color: #f1f9ff;
+    transition: background-color 0.3s ease;
+}
+
+.modal-body tbody tr:last-child td {
+    border-bottom: none;
+}
+
 
 .btn-close {
     background: none;
